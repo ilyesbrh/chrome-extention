@@ -1,0 +1,75 @@
+{
+  "manifest_version": 2,
+  "name": "RENQUILE",
+  "version": "1.0",
+  "description": "Spain BLS webSite Inscription BOT",
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  },
+  "browser_action": {
+    "default_icon": "images/get_started128.png",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "background": {
+    "scripts": [
+      "eventPage.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "css": [],
+      "js": [
+        "Page1_contentScript.js"
+      ],
+      "matches": [
+        "https://algeria.blsspainvisa.com/book_appointment.php",
+        "file:///C:/Users/ilies/Desktop/visa/Page1/Page1.html",
+        "file:///C:/Users/ilies/Desktop/visa/page2.html"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "all_frames": true,
+      "css": [],
+      "js": [
+        "jquery-2.1.4.min.js",
+        "test_contentScript.js"
+      ],
+      "matches": [
+        "https://recaptcha-demo.appspot.com/recaptcha-v2-checkbox-explicit.php",
+        "https://algeria.blsspainvisa.com/book_appointment.php"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "all_frames": true,
+      "css": [],
+      "js": [
+        "jquery-2.1.4.min.js",
+        "Rechapcha.js"
+      ],
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "notifications",
+    "contextMenus",
+    "*://*/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "web_accessible_resources": ["popup.css"]
+}
