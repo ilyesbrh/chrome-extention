@@ -16,7 +16,11 @@
   "options_page": "options.html",
   "background": {
     "scripts": [
+      "jquery-2.1.4.min.js",
       "eventPage.js"
+    ],
+    "pages": [
+      "eventPage.html"
     ],
     "persistent": false
   },
@@ -25,6 +29,7 @@
       "all_frames": true,
       "css": [],
       "js": [
+        "jquery-2.1.4.min.js",
         "Page1_contentScript.js"
       ],
       "matches": [
@@ -39,11 +44,11 @@
       "css": [],
       "js": [
         "jquery-2.1.4.min.js",
-        "test_contentScript.js"
+        "Rechapcha.js"
       ],
       "matches": [
-        "https://recaptcha-demo.appspot.com/recaptcha-v2-checkbox-explicit.php",
-        "https://algeria.blsspainvisa.com/book_appointment.php"
+        "https://*/*",
+        "http://*/*"
       ],
       "run_at": "document_end"
     },
@@ -52,11 +57,11 @@
       "css": [],
       "js": [
         "jquery-2.1.4.min.js",
-        "Rechapcha.js"
+        "test_contentScript.js"
       ],
       "matches": [
-        "https://*/*",
-        "http://*/*"
+        "https://recaptcha-demo.appspot.com/recaptcha-v2-checkbox-explicit.php",
+        "https://algeria.blsspainvisa.com/book_appointment.php"
       ],
       "run_at": "document_end"
     }

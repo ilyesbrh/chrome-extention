@@ -4,27 +4,14 @@
  *
  */
 
-function
-    isInt(value) {
+function isInt(value) {
     return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }
 
-chrome.storage.onChanged.addListener(function (changes, storageName) {
-    chrome.browserAction.setBadgeText({ "text": changes.total.newValue.toString() });
+chrome.runtime.onInstalled.addListener(function (details) {
+
+    chrome.storage.sync.set({ phone: "659078581", juridiction: " # #10", mail: "ilies.bourouh@univ-bba.dz", code: "" });
+    console.log('chrome extention added');
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
-    if (message == "runContentScript") {
-        chrome.activeTab.executeScript({
-            file: 'rechapcha.js'
-        });
-    }
-    else if (request == 'test') {
-        sendResponse({ PhoneNumber: "test123" });
-    }
-    else {
-        
-    }
-});
 

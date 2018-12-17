@@ -4,7 +4,7 @@
  *
  */
 
-var form = document.forms["page1"].elements;
+var form = document.forms[0].elements;
 
 for (let index = 0; index < form.length; index++) {
 	console.log(form[index]+'\n');
