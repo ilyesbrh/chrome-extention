@@ -1,0 +1,96 @@
+var today = new Date();
+	var dd = today.getDate()+1;
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	if(dd<10){
+		dd='0'+dd
+	} 
+	if(mm<10){
+		mm='0'+mm
+	} 
+	var today = yyyy+'-'+mm+'-'+dd;
+	function formatDate(rawDate) {
+	  var day = ("0" + rawDate.getDate()).slice(-2);
+	  var month = ("0" + (rawDate.getMonth() + 1)).slice(-2);
+	  return (day)+ "-" + (month)+ "-" +rawDate.getFullYear() ;
+	}		
+	$(document).ready(function() {
+		var dt1  = '2018-11-28';
+		$('#dateOfBirth').datepicker({
+			format: "yyyy-mm-dd",
+            endDate: new Date(dt1),
+			startDate: '-100y',
+            autoclose: true,
+			startView: 2
+		});
+		$('#pptIssueDate').datepicker({
+			format: "yyyy-mm-dd",
+            endDate: new Date(dt1),
+			startDate: '-100y',
+            autoclose: true,
+			startView: 2
+		});
+		$('#pptExpiryDate').datepicker({
+			format: "yyyy-mm-dd",
+			startDate: new Date(dt1),
+            autoclose: true,
+			startView: 2
+		});
+		var dt4  = '2018-11-29';
+
+		var blocked_dates = ["29-03-2018","01-05-2018","17-06-2018","18-06-2018","05-07-2018","22-08-2018","23-08-2018","20-09-2018","12-10-2018","01-11-2018","20-11-2018","06-12-2018","25-12-2018","01-10-2018","14-10-2018","29-03-2018","01-05-2018","17-06-2018","18-06-2018","05-07-2018","22-08-2018","23-08-2018","20-09-2018","12-10-2018","01-11-2018","20-11-2018","06-12-2018","25-12-2018","01-10-2018","14-10-2018"];
+
+		var available_dates = ["29-11-2018"];
+
+		var fullCapicity_dates = ["02-12-2018","03-12-2018","04-12-2018"];
+
+		var offDates_dates = ["30-11-2018","01-12-2018"];
+		$('.app_date').datepicker({
+			language: "en",
+			Default: true,
+			format: "yyyy-mm-dd",
+			startDate: new Date(dt4),
+			endDate: '2018-12-04',
+			autoclose: true,
+			forceParse:true,
+			startView: 0,
+			beforeShowDay: function(date){
+				   var formattedDate = formatDate(date);
+				   if ($.inArray(formattedDate.toString(), blocked_dates) != -1){
+					   return {
+						  enabled : false,
+						  classes: 'inactiveClass',
+						  tooltip: 'Holiday'
+					   };
+				   }
+				   if ($.inArray(formattedDate.toString(), available_dates) != -1){
+					   return {
+						  enabled : true,
+						  classes: 'activeClass',
+						  tooltip: 'Book'
+					   };
+				   }
+
+				   if ($.inArray(formattedDate.toString(), fullCapicity_dates) != -1){
+					   return {
+						  enabled : false,
+						  classes: 'fullcap',
+						  tooltip: 'Slots Full'
+					   };
+				   }
+				   if ($.inArray(formattedDate.toString(), offDates_dates) != -1){
+					   return {
+						  enabled : false,
+						  classes: 'offday',
+						  tooltip: 'Off Day'
+					   };
+				   }
+					return {
+					  enabled : false,
+					  tooltip: 'Not Allowed'
+				   };
+				  return;
+			  }
+	    });
+		$("#app_date").datepicker("setDate", '2016-09-16');
+	});

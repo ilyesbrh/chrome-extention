@@ -4,55 +4,77 @@
  *
  */
 
-var form = document.forms[0].elements;
+document.onreadystatechange = () => {
+	if (document.readyState === 'complete') {
+		// document ready
+		document.getElementById('SettingsPage1').onclick = page1Fill;
+		document.getElementById('SettingsPage3').onclick = page3Fill;
+		INI();
+	}
+};
 
-for (let index = 0; index < form.length; index++) {
-	console.log(form[index]+'\n');
+function INI() {
+	chrome.storage.sync.get(['name', 'phone', 'juridiction', 'mail'], function (storage) {
+		console.log(storage);
+		document.getElementById('name').value = storage.name;
+		document.getElementById('phone').value = storage.phone;
+		if (storage.juridiction == '04')
+			document.getElementById('color-3').checked = true;
+		else
+			document.getElementById('color-2').checked = true;
+
+		document.getElementById('mail').value = storage.mail;
+	});
+	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
+		console.log(storage);
+		console.log("this is element" + document.getElementById('firstName'));
+
+		document.getElementById('firstName').value = storage.firstName;
+		document.getElementById('lastName').value = storage.lastName;
+		document.getElementById('birth').value = storage.birth;
+		document.getElementById('passNumber').value = storage.passNumber;
+		document.getElementById('issueDate').value = storage.issueDate;
+		document.getElementById('expiryDate').value = storage.expiryDate;
+		document.getElementById('issuePlace').value = storage.issuePlace;
+	});
 }
 
-$(function(){
+function page1Fill() {
 
-	chrome.storage.sync.get(['total','limit'],function(budget){
-
-		$('#total').text(budget.total);
-		$('#limit').text(budget.limit);
-
+	console.log('saving');
+	chrome.storage.sync.set({
+		code: "",
+		name: document.getElementById('name').value,
+		phone: document.getElementById('phone').value,
+		mail: document.getElementById('mail').value
+	}, function (params) {
+		console.log(params);
 	});
 
-	$('#spendAmount').click(function(){
-		chrome.storage.sync.get(['total','limit'],function(budget){
-			var newTotal = 0;
-			var limit ;
-			if (budget.total){
-				newTotal += parseInt(budget.total);
-			}
-			if (budget.limit){
-				limit = parseInt(budget.limit);
-			}
+	if (document.getElementById('color-3').checked == true )
+		chrome.storage.sync.set({ juridiction: "04" });
+	else
+		chrome.storage.sync.set({ juridiction: "31" });
 
+	console.log('saved');
+}
 
-			var amount = $('#amount').val();
-			if(amount){
-				
-				if(limit != null && newTotal + parseInt(amount) > limit) {
-					
-					let notification = {
-						type: 'basic',
-						iconUrl: 'images/get_started128.png',
-						title: 'limit reached!',
-						message: 'you passed your limits!'
-					}
-					chrome.notifications.create('limitNotif',notification);
-					return;
-				}
-				newTotal += parseInt(amount);
-				
-				chrome.storage.sync.set({'total': newTotal});
+function page3Fill() {
 
-				$('#total').text(newTotal);
-			}
+	console.log('saving');
 
-			$('#amount').val('');
+	chrome.storage.sync.set(
+		{
+			firstName: document.getElementById('firstName').value,
+			lastName: document.getElementById('lastName').value,
+			birth: document.getElementById('birth').value,
+			passNumber: document.getElementById('passNumber').value,
+			issueDate: document.getElementById('issueDate').value,
+			expiryDate: document.getElementById('expiryDate').value,
+			issuePlace: document.getElementById('issuePlace').value
+		}, function (params) {
+			console.log(params);
 		});
-	});
-});
+
+	console.log('saved');
+}

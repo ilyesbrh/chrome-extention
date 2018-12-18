@@ -44,11 +44,12 @@
       "css": [],
       "js": [
         "jquery-2.1.4.min.js",
-        "Rechapcha.js"
+        "jquery-ui.js",
+        "Page3_contentScript.js"
       ],
       "matches": [
-        "https://*/*",
-        "http://*/*"
+        "file:///C:/Users/ilies/Desktop/visa/page%203.html",
+        "file:///C:/Users/ilies/Desktop/visa/Algeria%20BLS%20Spain%20Visa_%20Spain%20Visa%20for%20Algeria%20How%20to%20Book%20Your%20Appointment%20for%20BLS%20VAC.html"
       ],
       "run_at": "document_end"
     },
@@ -57,11 +58,24 @@
       "css": [],
       "js": [
         "jquery-2.1.4.min.js",
-        "test_contentScript.js"
+        "Rechapcha.js"
       ],
       "matches": [
-        "https://recaptcha-demo.appspot.com/recaptcha-v2-checkbox-explicit.php",
-        "https://algeria.blsspainvisa.com/book_appointment.php"
+        "http://*/*",
+        "https://*/*"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "all_frames": true,
+      "css": [],
+      "js": [
+        "jquery-2.1.4.min.js",
+        "test_contentScript.js",
+        "Rechapcha.1.js"
+      ],
+      "matches": [
+        "https://recaptcha-demo.appspot.com/recaptcha-v2-checkbox-explicit.php"
       ],
       "run_at": "document_end"
     }
@@ -76,5 +90,8 @@
     "http://*/*",
     "https://*/*"
   ],
-  "web_accessible_resources": ["popup.css"]
+  "web_accessible_resources": [
+    "popup.css"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
 }

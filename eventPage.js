@@ -10,7 +10,8 @@ function isInt(value) {
 
 chrome.runtime.onInstalled.addListener(function (details) {
 
-    chrome.storage.sync.set({ phone: "659078581", juridiction: " # #10", mail: "ilies.bourouh@univ-bba.dz", code: "" });
+    chrome.storage.sync.set({ phone: "", juridiction: "04", mail: "", code: "" });
+    //chrome.storage.sync.set({ firstName: "", lastName: "", birth: "", passNumber: "",issueDate: "",expiryDate :"",issuePlace:"" });
     console.log('chrome extention added');
 });
 
