@@ -91,7 +91,6 @@ function RequestBLS() {
                             }
                             else if (response.trim() == "pass") {
                                 $("#reponse_div").html("Verification code sent to your phone.");
-                               
                             }
                             else {
                                 $("#reponse_div").html("Authentication Failed.");
@@ -114,15 +113,23 @@ function RequestBLS() {
     btn.style.left = "0";
     document.getElementsByClassName('row white')[0].appendChild(btn);
     btn.setAttribute('id', 'btnBridj');
-    document.getElementById('btnBridj').onclick = function () { clearInterval(blsRequest); };
+    location.href = `
+        document.getElementById('btnBridj').onclick = function () { 
+
+            console.log(document.getElementById('g-recaptcha-response').value);
+
+        };
+
+    `
 }
 function waitForCode(mobileNo) {
 
     if (blsRequest != null) {
-
+        console.log('stop blsRequest')
         clearInterval(blsRequest);
     }
-
+    
+    console.log('pending server for COde')
     CodeRequest = setInterval(() => {
         $.ajax({
             type: "GET",
@@ -130,6 +137,7 @@ function waitForCode(mobileNo) {
             crossDomain: true,
             success: function (data) {
                 if (data != '0') {
+                    console.log('code Getted'+' '+data)
                     clearInterval(CodeRequest);
                     chrome.storage.sync.set({ code: data }, function () {
                         console.log('code is set to ' + data);
