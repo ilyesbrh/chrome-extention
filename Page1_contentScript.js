@@ -113,7 +113,7 @@ function RequestBLS() {
     btn.style.left = "0";
     document.getElementsByClassName('row white')[0].appendChild(btn);
     btn.setAttribute('id', 'btnBridj');
-    location.href = `
+    location.href = `javascript:
         document.getElementById('btnBridj').onclick = function () { 
 
             console.log(document.getElementById('g-recaptcha-response').value);
