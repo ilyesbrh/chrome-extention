@@ -23,7 +23,7 @@ chrome.storage.sync.get(['code'], function (storage) {
 
                 }
             },
-            4000);
+            3000);
     }
 });
 

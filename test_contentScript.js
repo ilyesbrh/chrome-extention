@@ -8,16 +8,16 @@
 
 
 if (false) {
-
+    
     //activate captcha script remotly
     
     setTimeout(function () {
         chrome.runtime.sendMessage('runContentScript');
         //$("#recaptcha-anchor div.recaptcha-checkbox-checkmark").click();
     }, 5000);
-
+    
     //push chrome extentions notification whene action accure
-
+    
     $('#spendAmount').click(function () {
         let notification = {
             type: 'basic',
@@ -34,23 +34,23 @@ if (false) {
         "contexts": ["selection"]
     };
     chrome.contextMenus.create(contextMenuItem);
-
-
+    
+    
     /* send message And hanld response in callBack */
 
     chrome.runtime.sendMessage('test2', function (response) {
         //Alert the message
         //var PhoneCode = response.PhoneNumber;
     });
-
+    
     console.log('work test');
-
-
+    
+    
     /* reload Page every 60 secends */
-
-
+    
+    
     var reload = setInterval(function () {
-
+        
         chrome.runtime.sendMessage('GetPhoneNumber', function (response) {
             //Alert the message
             var PhoneCode = response;
@@ -59,16 +59,16 @@ if (false) {
                 location.reload();
             }
             else
-                reload.clearInterval();
+            reload.clearInterval();
         });
-
+        
 
     }, 60000);
-
-
+    
+    
     /* on click modifie localDatabase values */
 
-
+    
     chrome.contextMenus.onClicked.addListener(function (clickData) {
         if (clickData.menuItemId == "spendMoney" && clickData.selectionText) {
             if (isInt(clickData.selectionText)) {
@@ -95,5 +95,24 @@ if (false) {
     });
 
 } else {
+    waitForCode('659078581');
+}
+
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    console.log(request);
+    if (request.message == 'SetCode') {
+
+        console.log(request.PhoneCode);
+        alert(request.PhoneCode);
+        location.reload();
+
+    }
+
+});
+function waitForCode(mobileNo) {
     
+    console.log('pending server for COde')
+    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
 }

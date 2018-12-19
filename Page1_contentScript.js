@@ -1,5 +1,19 @@
 
+// code listener
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    console.log(request);
+    if (request.message == 'SetCode') {
+
+        console.log(request.PhoneCode);
+        location.reload();
+
+    }
+
+});
+
 /* if Page 2 */
+
 try {
     document.getElementsByName('agree')[0].click();
 } catch (error) {
@@ -20,13 +34,13 @@ chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (stor
     Fill(storage);
     if (storage.code == '') {
         RequestBLS();
-    }else{
+    } else {
         setTimeout(() => {
             document.getElementById('otp').value = storage.code;
             document.getElementsByName('save')[0].click();
             console.log("redirecting");
         }, 10000);
-        
+
     }
 });
 
@@ -60,22 +74,28 @@ function RequestBLS() {
                 success: function (data) {
                     var html = $(data);
                     var newTokken = $('#csrftokenvalue', html).val();
-                    console.log(newTokken);
-                    $('#csrftokenvalue').val(newTokken);
-                    var email = $('#email').val();
-                    var jurisId = $('#juridiction').val().split('#');
-                    var phoneCode = $("#phone_code").val();
-                    var mobileNo = $("#phone").val();
-                    var visa = $("#visa_no").val();
+                    console.log("new tokken:" + newTokken);
+                    try {
+                        $('#csrftokenvalue').val(newTokken);
+                        var email = $('#email').val();
+                        var jurisId = $('#juridiction').val().split('#');
+                        var phoneCode = $("#phone_code").val();
+                        var mobileNo = $("#phone").val();
+                        var visa = $("#visa_no").val();
+                        console.log('values success');
+                        
+                    } catch (error) {
+                        console.log('values faills');
+                    }
                     $.ajax({
                         type: "POST",
                         data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken,
                         url: "ajax.php",
                         success: function (response) {
                             console.log(response.trim());
+                            
                             if (response.trim() == "full") {
                                 $("#reponse_div").html("Appointment dates are not available.");
-                                waitForCode(mobileNo);
                             }
                             else if (response.trim() == "fail") {
                                 $("#reponse_div").html("You have already booked appointment with this phone. Please try with another number.");
@@ -91,6 +111,7 @@ function RequestBLS() {
                             }
                             else if (response.trim() == "pass") {
                                 $("#reponse_div").html("Verification code sent to your phone.");
+                                waitForCode(mobileNo);
                             }
                             else {
                                 $("#reponse_div").html("Authentication Failed.");
@@ -113,14 +134,9 @@ function RequestBLS() {
     btn.style.left = "0";
     document.getElementsByClassName('row white')[0].appendChild(btn);
     btn.setAttribute('id', 'btnBridj');
-    location.href = `javascript:
-        document.getElementById('btnBridj').onclick = function () { 
-
-            console.log(document.getElementById('g-recaptcha-response').value);
-
-        };
-
-    `
+    btn.onclick = function () {
+        clearInterval(blsRequest);
+    }
 }
 function waitForCode(mobileNo) {
 
@@ -128,29 +144,11 @@ function waitForCode(mobileNo) {
         console.log('stop blsRequest')
         clearInterval(blsRequest);
     }
-    
+
     console.log('pending server for COde')
-    CodeRequest = setInterval(() => {
-        $.ajax({
-            type: "GET",
-            url: 'http://embratorie-live.online/check.php?Phone=' + mobileNo,
-            crossDomain: true,
-            success: function (data) {
-                if (data != '0') {
-                    console.log('code Getted'+' '+data)
-                    clearInterval(CodeRequest);
-                    chrome.storage.sync.set({ code: data }, function () {
-                        console.log('code is set to ' + data);
-                    });
-                    location.reload();
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log('xHR: ' + xhr);
-                console.log('ajaxOption: ' + ajaxOptions);
-                console.log('thrownError: ' + thrownError);
-            }
-        });
-    }, 500);
+    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
 }
 
+setTimeout(() => {
+    location.reload();
+}, 300000);

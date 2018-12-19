@@ -10,9 +10,44 @@ function isInt(value) {
 
 chrome.runtime.onInstalled.addListener(function (details) {
 
-    chrome.storage.sync.set({ phone: "", juridiction: "04", mail: "", code: "" });
+    chrome.storage.sync.set({code: "" });
+    //chrome.storage.sync.set({ phone: "", juridiction: "04", mail: "", code: "" });
     //chrome.storage.sync.set({ firstName: "", lastName: "", birth: "", passNumber: "",issueDate: "",expiryDate :"",issuePlace:"" });
     console.log('chrome extention added');
 });
 
+var CodeRequest;
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    
+    if (request.message == 'GetCode') {
+
+        CodeRequest = setInterval(function () {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", 'http://embratorie-live.online/check.php?Phone=' + request.mobileno, true);
+            xhr.onreadystatechange = function () {
+                console.log('state changed');
+                if (xhr.readyState == 4) {
+                    // WARNING! Might be injecting a malicious script!
+                    console.log('code Getted' + ' ' + xhr.responseText);
+                    if (xhr.responseText != '0' && xhr.responseText != '') {
+                        clearInterval(CodeRequest);
+                        chrome.storage.sync.set({ code: xhr.responseText }, function () {
+                            console.log('code is set to ' + xhr.responseText);
+                            clearInterval(CodeRequest);
+                        });
+                        chrome.tabs.query({active: true}, function(tabs)
+                        { 
+                            chrome.tabs.sendMessage(tabs[0].id, { message: 'SetCode', PhoneCode: xhr.responseText }); 
+                        });
+                    }
+                }
+            };
+            xhr.send();
+        }, 500);
+    }
+
+});
 
