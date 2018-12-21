@@ -47,7 +47,8 @@
         "Page3_contentScript.js"
       ],
       "matches": [
-        "https://algeria.blsspainvisa.com/appointment.php"
+        "https://algeria.blsspainvisa.com/appointment.php",
+        "https://egypt.blsspainvisa.com/appointment.php"
       ],
       "run_at": "document_end"
     },

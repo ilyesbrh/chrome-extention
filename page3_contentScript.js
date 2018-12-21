@@ -8,9 +8,9 @@ document.onreadystatechange = () => {
             console.log('\n\n');
 
             chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
-                
+
                 console.log(storage);
-                
+
                 location.href = `javascript:document.getElementById('first_name').value = '${storage.firstName}';
                 document.getElementById('last_name').value =' ${storage.lastName}';
                 document.getElementById('passport_no').value = '${storage.passNumber}';
@@ -24,23 +24,30 @@ document.onreadystatechange = () => {
                 document.getElementById('app_time').selectedIndex = ei;
                 $('#terms').prop('checked', true);
 
-                document.getElementById('applicantBooking2').onsubmit = "return true;";
+                document.getElementById('applicantBooking2').onsubmit = function () { return true };
                 
-                setTimeout(() => {
-                    document.getElementById('applicantBooking2').submit();
-                }, 12000);
+                vat page3Interval = setInterval(() => {
+                    var g =grecaptcha.getResponse();
+                    if(g != ''){
+                        $("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />');
+                        document.getElementById('applicantBooking2').submit();
+                        console.log("redirecting");
+                        clearInterval(page3Interval);
+                    }else{
+                        console.log('not checked yet');
+                    }
+                }, 500);
                 `
             });
-            
+
         } else {
-            
             var data = document.getElementsByTagName('script')[12].innerText;
             var re = /var available_dates = \[(.*?)\];/g;
             var result = re.exec(data);
             eval(result[0]);
             console.log(available_dates);
             document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
-            document.getElementById('applicantBooking2').onsubmit = "return true;";
+            document.getElementById('applicantBooking2').onsubmit = function () { return true };
             document.getElementById('applicantBooking2').submit();
         }
     }
@@ -50,4 +57,8 @@ document.onreadystatechange = () => {
 function formatDate(rawDate) {
     var arry = rawDate.split("-");
     return arry[2] + "-" + arry[1] + "-" + arry[0];
-}	
+}
+$("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />'),
+    $("#applicantBooking2").append('<input type="hidden" name="g-recaptcha-response" value="' + grecaptcha.getResponse() + '" />'),
+    document.applicantBooking2.onsubmit = function () { return true },
+    document.applicantBooking2.submit();

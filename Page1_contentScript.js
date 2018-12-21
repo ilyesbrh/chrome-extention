@@ -35,11 +35,18 @@ chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (stor
     if (storage.code == '') {
         RequestBLS();
     } else {
-        setTimeout(() => {
-            document.getElementById('otp').value = storage.code;
-            document.getElementsByName('save')[0].click();
-            console.log("redirecting");
-        }, 10000);
+        document.getElementById('otp').value = storage.code;
+        location.href = `javascript:
+            var intrval = setInterval(() => {
+                var g =grecaptcha.getResponse();
+                if(g != ''){
+                    document.getElementsByName('save')[0].click();
+                    console.log("redirecting");
+                    clearInterval(intrval);
+                }else{
+                    console.log('not checked yet');
+                }
+            }, 500);`;
 
     }
 });
@@ -83,7 +90,7 @@ function RequestBLS() {
                         var mobileNo = $("#phone").val();
                         var visa = $("#visa_no").val();
                         console.log('values success');
-                        
+
                     } catch (error) {
                         console.log('values faills');
                     }
@@ -93,7 +100,7 @@ function RequestBLS() {
                         url: "ajax.php",
                         success: function (response) {
                             console.log(response.trim());
-                            
+
                             if (response.trim() == "full") {
                                 $("#reponse_div").html("Appointment dates are not available.");
                             }
@@ -186,3 +193,4 @@ function sendToAnother() {
         });
     });
 }
+
