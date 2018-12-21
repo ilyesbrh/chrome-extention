@@ -24,23 +24,24 @@ document.onreadystatechange = () => {
                 document.getElementById('app_time').selectedIndex = ei;
                 $('#terms').prop('checked', true);
 
-                document.getElementById('applicantBooking2').onsubmit = "";
-
+                document.getElementById('applicantBooking2').onsubmit = "return true;";
+                
                 setTimeout(() => {
                     document.getElementById('applicantBooking2').submit();
                 }, 12000);
                 `
             });
-
+            
         } else {
-
+            
             var data = document.getElementsByTagName('script')[12].innerText;
             var re = /var available_dates = \[(.*?)\];/g;
             var result = re.exec(data);
             eval(result[0]);
             console.log(available_dates);
             document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
-
+            document.getElementById('applicantBooking2').onsubmit = "return true;";
+            document.getElementById('applicantBooking2').submit();
         }
     }
 };

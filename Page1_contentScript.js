@@ -126,7 +126,7 @@ function RequestBLS() {
                 }
             });
         });
-    }, 5000);
+    }, 17000);
     btn = document.createElement("BUTTON");
     btn.innerHTML = "Arrêter l'interval";
     btn.style.zIndex = "999999";
@@ -145,10 +145,44 @@ function waitForCode(mobileNo) {
         clearInterval(blsRequest);
     }
 
-    console.log('pending server for COde')
+    console.log('pending server for Code')
     chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
+
+    //sendToAnother();
 }
 
-setTimeout(() => {
-    location.reload();
-}, 300000);
+function sendToAnother() {
+    $().ready(function () {
+        $.ajax({
+            type: "GET",
+            url: 'https://algeria.blsspainvisa.com/book_appointment.php',
+            crossDomain: true,
+            success: function (data) {
+                var html = $(data);
+                var newTokken = $('#csrftokenvalue', html).val();
+                console.log("new tokken:" + newTokken);
+                try {
+                    var email = "brhilyes3@gmail.com";
+                    var jurisId = $('#juridiction').val().split('#');
+                    var phoneCode = "213";
+                    var mobileNo = "659078581";
+                    var visa = "";
+                    console.log('values success');
+                }
+                catch (error) {
+                    console.log('values faills');
+                }
+                $.ajax({
+                    type: "POST",
+                    data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken,
+                    url: "ajax.php",
+                    success: function (response) {
+                        console.log("send to 7atba");
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+}
