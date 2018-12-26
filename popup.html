@@ -4,18 +4,19 @@
 <head>
   <title>BLS</title>
   <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="popup.js"></script>
   <link rel="stylesheet" href="bootstrap.min.css">
   <script src="./jquery-3.3.1.slim.min.js"></script>
   <script src="./popper.min.js"></script>
   <script src="./bootstrap.min.js"></script>
   <link rel="stylesheet" href="./popup.css">
+  <script type="text/javascript" src="popup.config.js"></script>
+  <script type="text/javascript" src="popup.js"></script>
 
 </head>
 
 <body>
   <div id="bodyy" class="div container-fluid py-5" style="min-height: 100vh;">
-    <div id="tabs" class="container shadow-lg rounded">
+    <div id="tabs" class="container shadow-lg rounded px-0">
       <div class="container">
         <h6 class="section-title h1">Renquile</h6>
         <div class="row">
@@ -26,6 +27,8 @@
                   aria-controls="nav-home" aria-selected="true">page 1</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
                   aria-controls="nav-contact" aria-selected="false">page 3</a>
+                <a class="nav-item nav-link" id="nav-import-tab" data-toggle="tab" href="#nav-import" role="tab"
+                  aria-controls="nav-import" aria-selected="false">Import</a>
               </div>
             </nav>
             <div class="tab-content py-3 " id="nav-tabContent">
@@ -81,16 +84,55 @@
                       </div>
                     </div>
                     <!-- Button trigger modal -->
-                    <button id="SettingsPage1" type="button" class="btn btn-primary" >
+                    <button id="SettingsPage1" type="button" class="btn btn-primary">
                       Save
                     </button>
                   </div>
                 </form>
               </div>
+
+              <div class="tab-pane fade show" id="nav-import" role="tabpanel" aria-labelledby="nav-import-tab">
+                <div id="Alert" class="alert alert-warning" role="alert" style="display: none">
+                  <strong id="alert-msg"></strong>.
+                </div>
+                <form id="page1" name="page1" class="row px-1">
+                  <div class="col-sm-12 offset-md-2 px-1">
+                    <div>
+                      <div class="form-group">
+                        <label for="sel1">Select list (select one):</label>
+                        <select id="selectRDV" class="form-control">
+                        </select>
+                        <br>
+                      </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="row">
+                      <div class="col-sm-6 px-1">
+                        <label class="col-sm-6">juridiction:</label><label id="Djuridiction" class="col-sm-6"></label>
+                        <label class="col-sm-5">firstName:</label><label id="DfirstName" class="col-sm-7"></label>
+                        <label class="col-sm-5">lastName:</label><label id="DlastName" class="col-sm-7"></label>
+                        <label class="col-sm-4">phone:</label><label id="Dphone" class="col-sm-8"></label>
+                        <label class="col-sm-3">mail:</label><label id="Dmail" class="col-sm-9"></label>
+                      </div>
+                      <div class="col-sm-6 px-1">
+                        <label class="col-sm-4">birth:</label><label id="Dbirth" class="col-sm-8"></label>
+                        <label class="col-sm-6">passNumber:</label><label id="DpassNumber" class="col-sm-6"></label>
+                        <label class="col-sm-5">issueDate:</label><label id="DissueDate" class="col-sm-7"></label>
+                        <label class="col-sm-5">expiryDate:</label><label id="DexpiryDate" class="col-sm-7"></label>
+                        <label class="col-sm-5">issuePlace:</label><label id="DissuePlace" class="col-sm-7"></label>
+
+                      </div>
+                    </div>
+                    <button id="importObj" type="button" class="btn btn-primary">
+                      Import
+                    </button>
+                  </div>
+                </form>
+              </div>
+
               <div class="tab-pane fade " id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <form class="row">
                   <div class="col-md-8 offset-md-2">
-                    
                     <div>
                       <div class="form-group float-label-control">
                         <label for="">firstName</label>

@@ -9,12 +9,48 @@ document.onreadystatechange = () => {
 		// document ready
 		document.getElementById('SettingsPage1').onclick = page1Fill;
 		document.getElementById('SettingsPage3').onclick = page3Fill;
+		document.getElementById('importObj').onclick = importObj;
 		INI();
+		loadRDV();
 	}
 };
+function loadRDV() {
+
+	var x = document.getElementById("selectRDV");
+
+	x.onchange = function (params) {
+		loadRdvInfo(x.value);
+	};
+
+	for (let index = 0; index < RDV.length; index++) {
+		const element = RDV[index];
+		var option = document.createElement("option");
+		option.text = element.name;
+		option.value = index;
+		x.add(option);
+	}
+
+	loadRdvInfo(x.value);
+
+}
+function loadRdvInfo(index) {
+	const element = RDV[index];
+
+	document.getElementById('Dphone').innerText = element.phone;
+	document.getElementById('Dmail').innerText = element.mail;
+	document.getElementById('Djuridiction').innerText = element.juridiction;
+
+	document.getElementById('DfirstName').innerText = element.firstName;
+	document.getElementById('DlastName').innerText = element.lastName;
+	document.getElementById('Dbirth').innerText = element.birth;
+	document.getElementById('DpassNumber').innerText = element.passNumber;
+	document.getElementById('DissueDate').innerText = element.issueDate;
+	document.getElementById('DexpiryDate').innerText = element.expiryDate;
+	document.getElementById('DissuePlace').innerText = element.issuePlace;
+}
 
 function INI() {
-	chrome.storage.sync.get(['name', 'phone', 'juridiction', 'mail','code'], function (storage) {
+	chrome.storage.sync.get(['name', 'phone', 'juridiction', 'mail', 'code'], function (storage) {
 		console.log(storage);
 		document.getElementById('name').value = storage.name;
 		document.getElementById('phone').value = storage.phone;
@@ -54,7 +90,7 @@ function page1Fill() {
 		console.log(params);
 	});
 
-	if (document.getElementById('color-3').checked == true )
+	if (document.getElementById('color-3').checked == true)
 		chrome.storage.sync.set({ juridiction: "04" });
 	else
 		chrome.storage.sync.set({ juridiction: "31" });
@@ -81,3 +117,53 @@ function page3Fill() {
 
 	console.log('saved');
 }
+function importObj() {
+
+	try {
+		var x = document.getElementById("selectRDV");
+		var objt = RDV[x.value];
+		console.log(objt);
+		console.log('saving');
+
+		chrome.storage.sync.set({
+			firstName: objt.firstName,
+			lastName: objt.lastName,
+			birth: objt.birth,
+			passNumber: objt.passNumber,
+			issueDate: objt.issueDate,
+			expiryDate: objt.expiryDate,
+			issuePlace: objt.issuePlace,
+			code: objt.code,
+			name: objt.name,
+			phone: objt.phone,
+			mail: objt.mail
+		}, function (params) {
+		});
+
+		if (objt.juridiction == "Alger")
+			chrome.storage.sync.set({ juridiction: "04" });
+		else
+			chrome.storage.sync.set({ juridiction: "31" });
+
+		Alert(true);
+
+		console.log('saved');
+
+	} catch (error) {
+		Alert(false);
+	}
+}
+function Alert(params) {
+	var x = document.getElementById("Alert");
+	if (params) {
+		document.getElementById("alert-msg").innerHTML = "Imported Successfuly!";
+	} else {
+		document.getElementById("alert-msg").innerHTML = "Fail to Import Data!";
+	}
+	x.style.display = "block";
+
+	setTimeout(() => {
+		x.style.display = "none";
+	}, 6000);
+}
+

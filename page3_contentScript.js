@@ -4,7 +4,7 @@ document.onreadystatechange = () => {
 
         if (document.body.contains(document.getElementById('app_time'))) {
 
-            console.log(document.getElementById('app_time').value+'app_time available 3B');
+            console.log(document.getElementById('app_time').value + 'app_time available 3B');
 
             chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
 
@@ -42,10 +42,26 @@ document.onreadystatechange = () => {
             });
 
         } else {
-            var data = document.getElementsByTagName('script')[9].innerText;
             var re = /var available_dates = \[(.*?)\];/g;
-            var result = re.exec(data);
-            eval(result[0]);
+            var data;
+
+            try {
+                data = document.getElementsByTagName('script')[9].innerText;
+                var result = re.exec(data);
+                eval(result[0]);
+            } catch (error) {
+
+                try {
+                    data = document.getElementsByTagName('script')[10].innerText;
+                    var result = re.exec(data);
+                    eval(result[0]);
+                } catch (error) {
+                    data = document.getElementsByTagName('script')[8].innerText;
+                    var result = re.exec(data);
+                    eval(result[0]);
+                }
+            }
+
             console.log(available_dates);
             document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
             document.getElementById('applicantBooking2').onsubmit = function () { return true };
