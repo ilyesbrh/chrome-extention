@@ -14,7 +14,7 @@ document.onreadystatechange = () => {
 };
 
 function INI() {
-	chrome.storage.sync.get(['name', 'phone', 'juridiction', 'mail'], function (storage) {
+	chrome.storage.sync.get(['name', 'phone', 'juridiction', 'mail','code'], function (storage) {
 		console.log(storage);
 		document.getElementById('name').value = storage.name;
 		document.getElementById('phone').value = storage.phone;
@@ -24,6 +24,9 @@ function INI() {
 			document.getElementById('color-2').checked = true;
 
 		document.getElementById('mail').value = storage.mail;
+
+		document.getElementById('code').value = storage.code;
+
 	});
 	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
 		console.log(storage);
@@ -43,7 +46,7 @@ function page1Fill() {
 
 	console.log('saving');
 	chrome.storage.sync.set({
-		code: "",
+		code: document.getElementById('code').value,
 		name: document.getElementById('name').value,
 		phone: document.getElementById('phone').value,
 		mail: document.getElementById('mail').value

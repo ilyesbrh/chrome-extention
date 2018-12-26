@@ -48,7 +48,8 @@
       ],
       "matches": [
         "https://algeria.blsspainvisa.com/appointment.php",
-        "https://egypt.blsspainvisa.com/appointment.php"
+        "https://egypt.blsspainvisa.com/appointment.php",
+        "https://tunisia.blsspainvisa.com/appointment.php"
       ],
       "run_at": "document_end"
     },

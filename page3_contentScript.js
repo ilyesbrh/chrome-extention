@@ -4,14 +4,15 @@ document.onreadystatechange = () => {
 
         if (document.body.contains(document.getElementById('app_time'))) {
 
-            console.log(document.getElementById('app_time').value);
-            console.log('\n\n');
+            console.log(document.getElementById('app_time').value+'app_time available 3B');
 
             chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
 
                 console.log(storage);
 
-                location.href = `javascript:document.getElementById('first_name').value = '${storage.firstName}';
+                location.href = `javascript:
+                console.log('setting values');
+                document.getElementById('first_name').value = '${storage.firstName}';
                 document.getElementById('last_name').value =' ${storage.lastName}';
                 document.getElementById('passport_no').value = '${storage.passNumber}';
                 $('#dateOfBirth').datepicker("update", '${storage.birth}');
@@ -26,7 +27,7 @@ document.onreadystatechange = () => {
 
                 document.getElementById('applicantBooking2').onsubmit = function () { return true };
                 
-                vat page3Interval = setInterval(() => {
+                var page3Interval = setInterval(() => {
                     var g =grecaptcha.getResponse();
                     if(g != ''){
                         $("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />');
@@ -37,11 +38,11 @@ document.onreadystatechange = () => {
                         console.log('not checked yet');
                     }
                 }, 500);
-                `
+                `;
             });
 
         } else {
-            var data = document.getElementsByTagName('script')[12].innerText;
+            var data = document.getElementsByTagName('script')[9].innerText;
             var re = /var available_dates = \[(.*?)\];/g;
             var result = re.exec(data);
             eval(result[0]);
@@ -58,7 +59,3 @@ function formatDate(rawDate) {
     var arry = rawDate.split("-");
     return arry[2] + "-" + arry[1] + "-" + arry[0];
 }
-$("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />'),
-    $("#applicantBooking2").append('<input type="hidden" name="g-recaptcha-response" value="' + grecaptcha.getResponse() + '" />'),
-    document.applicantBooking2.onsubmit = function () { return true },
-    document.applicantBooking2.submit();
