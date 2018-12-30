@@ -66,7 +66,6 @@ function INI() {
 	});
 	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
 		console.log(storage);
-		console.log("this is element" + document.getElementById('firstName'));
 
 		document.getElementById('firstName').value = storage.firstName;
 		document.getElementById('lastName').value = storage.lastName;
