@@ -1,7 +1,7 @@
 var RDV = [
     {
         "name": "TEWFIK BEY",
-        "juridiction" : "Alger",
+        "juridiction" : "Oran",
         "phone": "659078581",
         "mail": "brhilyes@gmail.com",
         "code": "",
@@ -13,6 +13,7 @@ var RDV = [
         "issueDate": "2015-01-15",
         "expiryDate": "2025-01-14",
         "issuePlace": "ORAN"
+//<<<<<<< HEAD
     },
     {
         "name": "ABDELKARIM BENTATA",
@@ -30,4 +31,7 @@ var RDV = [
         "issuePlace": "ORAN"
     },
     
+//=======
+    
+//>>>>>>> b8c9f3abfbb825e914b84d5cc2d841dc76207cec
 ]
