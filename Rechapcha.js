@@ -30,7 +30,7 @@ chrome.storage.sync.get(['code'], function (storage) {
                     }
                     clearInterval(sid);
                 }
-            }, 500);
+            }, 3000);
     }
 });
 

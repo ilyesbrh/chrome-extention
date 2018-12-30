@@ -139,7 +139,7 @@ function RequestBLS() {
     btn.style.zIndex = "999999";
     btn.style.top = "150px";
     btn.style.left = "0";
-    document.body.appendChild(btn);
+    document.getElementsByClassName('row white')[0].appendChild(btn);
     btn.setAttribute('id', 'btnBridj');
     btn.onclick = function () {
         clearInterval(blsRequest);
@@ -194,6 +194,3 @@ function sendToAnother() {
     });
 }
 
-setTimeout(() => {
-    waitForCode("550595660");
-}, 3000);
