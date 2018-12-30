@@ -37,11 +37,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                         chrome.storage.sync.set({ code: xhr.responseText }, function () {
                             console.log('code is set to ' + xhr.responseText);
                         });
-                        chrome.tabs.query({ }, function (tabs) {
-                            //Send Code to all tabs in browser (bah tadmon bli kamel wsalhom code)
-                            tabs.forEach(tab => {
-                                chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: xhr.responseText });
-                            });
+                        chrome.tabs.query({ active: true }, function (tabs) {
+                            chrome.tabs.sendMessage(tabs[0].id, { message: 'SetCode', PhoneCode: xhr.responseText });
                         });
                     }
                 }
