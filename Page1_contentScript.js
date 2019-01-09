@@ -133,7 +133,7 @@ function RequestBLS() {
                 }
             });
         });
-    }, 17000);
+    }, 5000);
     btn = document.createElement("BUTTON");
     btn.innerHTML = "Arrêter l'interval";
     btn.style.zIndex = "999999";

@@ -46,13 +46,13 @@ document.onreadystatechange = () => {
             var data;
 
             try {
-                data = document.getElementsByTagName('script')[9].innerText;
+                data = document.getElementsByTagName('script')[10].innerText;
                 var result = re.exec(data);
                 eval(result[0]);
             } catch (error) {
 
                 try {
-                    data = document.getElementsByTagName('script')[10].innerText;
+                    data = document.getElementsByTagName('script')[9].innerText;
                     var result = re.exec(data);
                     eval(result[0]);
                 } catch (error) {
@@ -63,7 +63,12 @@ document.onreadystatechange = () => {
             }
 
             console.log(available_dates);
-            document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
+            if (available_dates.length > 1) {
+                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);    
+            } else {
+                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);    
+            }
+            
             document.getElementById('applicantBooking2').onsubmit = function () { return true };
             document.getElementById('applicantBooking2').submit();
         }
