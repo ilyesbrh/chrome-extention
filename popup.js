@@ -109,7 +109,8 @@ function page3Fill() {
 			passNumber: document.getElementById('passNumber').value,
 			issueDate: document.getElementById('issueDate').value,
 			expiryDate: document.getElementById('expiryDate').value,
-			issuePlace: document.getElementById('issuePlace').value
+			issuePlace: document.getElementById('issuePlace').value,
+			cphone: document.getElementById('Cphone').value 
 		}, function (params) {
 			console.log(params);
 		});

@@ -8,8 +8,6 @@ document.onreadystatechange = () => {
 
             chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
 
-                console.log(storage);
-
                 location.href = `javascript:
                 console.log('setting values');
                 document.getElementById('first_name').value = '${storage.firstName}';
@@ -18,6 +16,10 @@ document.onreadystatechange = () => {
                 $('#dateOfBirth').datepicker("update", '${storage.birth}');
                 $('#pptIssueDate').datepicker("update", '${storage.issueDate}');
                 $('#pptExpiryDate').datepicker("update", '${storage.expiryDate}');
+                document.getElementById('phone').value="${storage.expiryDate}";
+                if (${storage.cphone} != "") {
+                    document.getElementById('phone').value="${storage.cphone}"
+                }
                 document.getElementById('pptIssuePalace').value = '${storage.issuePlace}';
                 document.getElementById('VisaTypeId').selectedIndex = 1;
                 var indexMax = document.getElementById('app_time').length - 1;
@@ -64,11 +66,11 @@ document.onreadystatechange = () => {
 
             console.log(available_dates);
             if (available_dates.length > 1) {
-                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);    
+                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);
             } else {
-                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);    
+                document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
             }
-            
+
             document.getElementById('applicantBooking2').onsubmit = function () { return true };
             document.getElementById('applicantBooking2').submit();
         }
