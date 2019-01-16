@@ -16,10 +16,6 @@ document.onreadystatechange = () => {
                 $('#dateOfBirth').datepicker("update", '${storage.birth}');
                 $('#pptIssueDate').datepicker("update", '${storage.issueDate}');
                 $('#pptExpiryDate').datepicker("update", '${storage.expiryDate}');
-                document.getElementById('phone').value="${storage.expiryDate}";
-                if (${storage.cphone} != "") {
-                    document.getElementById('phone').value="${storage.cphone}"
-                }
                 document.getElementById('pptIssuePalace').value = '${storage.issuePlace}';
                 document.getElementById('VisaTypeId').selectedIndex = 1;
                 var indexMax = document.getElementById('app_time').length - 1;
@@ -45,6 +41,7 @@ document.onreadystatechange = () => {
 
         } else {
             var re = /var available_dates = \[(.*?)\];/g;
+            var full = /var fullCapicity_dates  = \[(.*?)\];/g;
             var data;
 
             try {
