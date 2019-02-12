@@ -35,7 +35,7 @@ chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (stor
     if (storage.code == '') {
         RequestBLS();
     } else {
-        document.getElementById('otp').value = storage.code;
+        document.getElementById('otpvr').value = storage.code;
         location.href = `javascript:
             var intrval = setInterval(() => {
                 var g =grecaptcha.getResponse();
@@ -109,6 +109,7 @@ function RequestBLS() {
                             }
                             else if (response.trim() == "same") {
                                 $("#reponse_div").html("Please used last sent verification code.");
+                                waitForCode(mobileNo);
                             }
                             else if (response.trim() == "error") {
                                 $("#reponse_div").html("Please check your phone number and country code for phone.");
@@ -134,17 +135,8 @@ function RequestBLS() {
             });
         });
     }, 5000);
-    btn = document.createElement("BUTTON");
-    btn.innerHTML = "Arrêter l'interval";
-    btn.style.zIndex = "999999";
-    btn.style.top = "150px";
-    btn.style.left = "0";
-    document.body.appendChild(btn);
-    btn.setAttribute('id', 'btnBridj');
-    btn.onclick = function () {
-        clearInterval(blsRequest);
-    }
 }
+
 function waitForCode(mobileNo) {
 
     if (blsRequest != null) {
