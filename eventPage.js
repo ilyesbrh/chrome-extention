@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         CodeRequest = setInterval(function () {
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", 'https://iliesbourouh.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
+            xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
                 if (xhr.readyState == 4) {
@@ -48,6 +48,29 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             };
             xhr.send();
         }, 500);
+    }
+    else if (request.message == 'GetServerStats'){
+
+        var xhr = new XMLHttpRequest();
+            xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=123', true);
+            xhr.onreadystatechange = function () {
+                console.log('state changed');
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // WARNING! Might be injecting a malicious script!
+                    console.log('server Live');
+                    chrome.runtime.sendMessage({
+                        msg: "Stats", 
+                        data: true
+                    });
+                }else{
+                    chrome.runtime.sendMessage({
+                        msg: "Stats", 
+                        data: false
+                    });
+                }
+            };
+            xhr.send();
+        
     }
 
 });

@@ -12,8 +12,13 @@ document.onreadystatechange = () => {
 		document.getElementById('importObj').onclick = importObj;
 		INI();
 		loadRDV();
+		loadServerStat();
 	}
 };
+function loadServerStat() {
+	chrome.runtime.sendMessage({ message: 'GetServerStats'});
+}
+
 function loadRDV() {
 
 	var x = document.getElementById("selectRDV");
@@ -167,3 +172,29 @@ function Alert(params) {
 	}, 6000);
 }
 
+
+// server response listener 
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.msg === "Stats") {
+            
+			// set status to live
+			StatsAlert(request.data);
+        }
+    }
+);
+
+function StatsAlert(params) {
+	var x = document.getElementById("Stats");
+	if (params) {
+		document.getElementById("Stats-msg").innerHTML = "Server is Live!";
+	} else {
+		document.getElementById("Stats-msg").innerHTML = "Server is Down!";
+	}
+	x.style.display = "block";
+
+	setTimeout(() => {
+		x.style.display = "none";
+	}, 6000);
+}
