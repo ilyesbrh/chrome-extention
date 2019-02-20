@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'SetCode') {
 
         console.log(request.PhoneCode);
-        location.reload();
+        //location.reload();
 
     }
 
@@ -24,7 +24,6 @@ var CodeRequest;
 var blsRequest;
 var jurid;
 var popUp;
-var blsRequest;
 
 //UI
 var btn = null;
@@ -33,7 +32,9 @@ chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (stor
 
     Fill(storage);
     if (storage.code == '') {
-        RequestBLS();
+        //RequestBLS();
+        StartRequestInterval();
+
     } else {
         document.getElementById('otpvr').value = storage.code;
         location.href = `javascript:
@@ -50,6 +51,57 @@ chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (stor
 
     }
 });
+
+function StartRequestInterval() {
+    location.href =
+        `javascript: var inter = setInterval(
+        function () {
+            $().ready(
+                function () {
+                    $.ajax({
+                        type: "GET",
+                        url: 'https://algeria.blsspainvisa.com/book_appointment.php',
+                        crossDomain: true,
+                        success: function (data) {
+                            var html = $(data);
+                            var newTokken = $('#csrftokenvalue', html).val();
+                            console.log(newTokken); 
+                            $('#csrftokenvalue').val(newTokken);
+                            var email = $('#email').val();
+                            var jurisId = $('#juridiction').val().split('#');
+                            var phoneCode = $("#phone_code").val(); 
+                            var mobileNo = $("#phone").val();
+                            var visa = $("#visa_no").val();
+                            $.ajax({
+                                type: "POST",
+                                data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken, 
+                                url: "ajax.php",
+                                success: function (response) {
+                                    console.log(response.trim());
+                                    if (response.trim() == "full") {
+                                    } else if (response.trim() == "fail") {
+                                    } else if (response.trim() == "same") {
+                                        $("#reponse_div").html("true");
+                                        clearInterval(inter);
+                                    } else if (response.trim() == "error") {
+                                    } else if (response.trim() == "CSRF Token validation Failed") {
+                                    } else if (response.trim() == "pass") {
+                                        $("#reponse_div").html("true");
+                                        clearInterval(inter);
+                                    } else {
+                                    }
+                                }
+                            });
+                        }, error: function (xhr, ajaxOptions, thrownError) { 
+                            console.log('xHR: ' + xhr); 
+                            console.log('ajaxOption: ' + ajaxOptions); 
+                            console.log('thrownError: ' + thrownError); 
+                        }
+                    });
+                });
+        }, 4000);`;
+    waitForCode($("#phone").val());
+}
 
 function Fill(storage) {
     location.href = "javascript:showQuestion(); void 0";
@@ -71,6 +123,61 @@ function Fill(storage) {
     console.log(storage.code);
 }
 
+
+function waitForCode(mobileNo) {
+
+    blsRequest = setInterval(() => {
+        if ($("#reponse_div").html() == 'true') {
+
+            console.log('stop blsRequest');
+            chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
+            if (blsRequest != null) {
+                clearInterval(blsRequest);
+            }
+        }
+    }, 200);
+
+    //sendToAnother();
+    
+}
+
+// usless function jsut i cant delete it :')
+function sendToAnother() {
+    $().ready(function () {
+        $.ajax({
+            type: "GET",
+            url: 'https://algeria.blsspainvisa.com/book_appointment.php',
+            crossDomain: true,
+            success: function (data) {
+                var html = $(data);
+                var newTokken = $('#csrftokenvalue', html).val();
+                console.log("new tokken:" + newTokken);
+                try {
+                    var email = "brhilyes3@gmail.com";
+                    var jurisId = $('#juridiction').val().split('#');
+                    var phoneCode = "213";
+                    var mobileNo = "659078581";
+                    var visa = "";
+                    console.log('values success');
+                }
+                catch (error) {
+                    console.log('values faills');
+                }
+                $.ajax({
+                    type: "POST",
+                    data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken,
+                    url: "ajax.php",
+                    success: function (response) {
+                        console.log("send to 7atba");
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+}
+// old function to request bls token (problem : CORS)
 function RequestBLS() {
     blsRequest = setInterval(function () {
         $().ready(function () {
@@ -98,6 +205,7 @@ function RequestBLS() {
                         type: "POST",
                         data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken,
                         url: "ajax.php",
+                        crossDomain: true,
                         success: function (response) {
                             console.log(response.trim());
 
@@ -134,54 +242,5 @@ function RequestBLS() {
                 }
             });
         });
-    }, 5000);
-}
-
-function waitForCode(mobileNo) {
-
-    if (blsRequest != null) {
-        console.log('stop blsRequest')
-        clearInterval(blsRequest);
-    }
-
-    console.log('pending server for Code')
-    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
-
-    //sendToAnother();
-}
-
-function sendToAnother() {
-    $().ready(function () {
-        $.ajax({
-            type: "GET",
-            url: 'https://algeria.blsspainvisa.com/book_appointment.php',
-            crossDomain: true,
-            success: function (data) {
-                var html = $(data);
-                var newTokken = $('#csrftokenvalue', html).val();
-                console.log("new tokken:" + newTokken);
-                try {
-                    var email = "brhilyes3@gmail.com";
-                    var jurisId = $('#juridiction').val().split('#');
-                    var phoneCode = "213";
-                    var mobileNo = "659078581";
-                    var visa = "";
-                    console.log('values success');
-                }
-                catch (error) {
-                    console.log('values faills');
-                }
-                $.ajax({
-                    type: "POST",
-                    data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken,
-                    url: "ajax.php",
-                    success: function (response) {
-                        console.log("send to 7atba");
-                    }
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-            }
-        });
-    });
+    }, 10000);
 }
