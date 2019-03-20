@@ -1,22 +1,43 @@
 
-// code listener
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
-    console.log(request);
-    if (request.message == 'SetCode') {
-
-        console.log(request.PhoneCode);
-        //location.reload();
-
-    }
-
-});
-
 /* if Page 2 */
 
-try {
-    document.getElementsByName('agree')[0].click();
-} catch (error) {
+window.addEventListener("load", myMain, false);
+
+function myMain(evt) {
+    console.log('im here');
+    
+    if (document.getElementsByName('agree')) {
+        document.getElementsByName('agree')[0].click();
+    }
+    else if (document.getElementById('otpvr')) {
+
+        chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
+
+            Fill(storage);
+            if (storage.code == '') {
+                //RequestBLS();
+                StartRequestInterval();
+
+            } else {
+                document.getElementById('otpvr').value = storage.code;
+                location.href = `javascript:
+                    var intrval = setInterval(() => {
+                        var g =grecaptcha.getResponse();
+                        if(g != ''){
+                            document.getElementsByName('save')[0].click();
+                            console.log("redirecting");
+                            clearInterval(intrval);
+                        }else{
+                            console.log('not checked yet');
+                        }
+                    }, 500);`;
+
+            }
+        });
+    }
+    else {
+        location.reload();
+    }
 }
 
 //intervals
@@ -28,29 +49,6 @@ var popUp;
 //UI
 var btn = null;
 
-chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
-
-    Fill(storage);
-    if (storage.code == '') {
-        //RequestBLS();
-        StartRequestInterval();
-
-    } else {
-        document.getElementById('otpvr').value = storage.code;
-        location.href = `javascript:
-            var intrval = setInterval(() => {
-                var g =grecaptcha.getResponse();
-                if(g != ''){
-                    document.getElementsByName('save')[0].click();
-                    console.log("redirecting");
-                    clearInterval(intrval);
-                }else{
-                    console.log('not checked yet');
-                }
-            }, 500);`;
-
-    }
-});
 
 function StartRequestInterval() {
     location.href =
@@ -99,7 +97,7 @@ function StartRequestInterval() {
                         }
                     });
                 });
-        }, 4000);`;
+        }, 7000);`;
     waitForCode($("#phone").val());
 }
 
@@ -136,12 +134,36 @@ function waitForCode(mobileNo) {
             }
         }
     }, 200);
-
-    //sendToAnother();
-    
+    //sendToAnother();   
 }
 
-// usless function jsut i cant delete it :')
+// code listener
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    console.log(request);
+    if (request.message == 'SetCode') {
+
+        console.log(request.PhoneCode);
+
+        /* location.reload(); */
+        document.getElementById('otpvr').value = request.PhoneCode;
+        location.href = `javascript:
+            var intrval = setInterval(() => {
+                var g =grecaptcha.getResponse();
+                if(g != ''){
+                    document.getElementsByName('save')[0].click();
+                    console.log("redirecting");
+                    clearInterval(intrval);
+                }else{
+                    console.log('not checked yet');
+                }
+            }, 500);`;
+    }
+
+});
+
+
+// usless function, just i cant delete it :')
 function sendToAnother() {
     $().ready(function () {
         $.ajax({
