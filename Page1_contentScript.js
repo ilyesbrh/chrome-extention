@@ -6,7 +6,7 @@ window.addEventListener("load", myMain, false);
 function myMain(evt) {
     console.log('im here');
     
-    if (document.getElementsByName('agree')) {
+    if (document.getElementsByName('agree')[0]) {
         document.getElementsByName('agree')[0].click();
     }
     else if (document.getElementById('otpvr')) {
