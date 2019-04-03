@@ -9,14 +9,19 @@ document.onreadystatechange = () => {
 		// document ready
 		document.getElementById('SettingsPage1').onclick = page1Fill;
 		document.getElementById('SettingsPage3').onclick = page3Fill;
+		document.getElementById('load').onclick = loadCode;
 		document.getElementById('importObj').onclick = importObj;
 		INI();
 		loadRDV();
 		loadServerStat();
 	}
 };
+
+function loadCode() {
+	chrome.runtime.sendMessage({ message: 'GetServerCode', phone: document.getElementById('Dphone').innerText });
+}
 function loadServerStat() {
-	chrome.runtime.sendMessage({ message: 'GetServerStats'});
+	chrome.runtime.sendMessage({ message: 'GetServerStats' });
 }
 
 function loadRDV() {
@@ -115,7 +120,7 @@ function page3Fill() {
 			issueDate: document.getElementById('issueDate').value,
 			expiryDate: document.getElementById('expiryDate').value,
 			issuePlace: document.getElementById('issuePlace').value,
-			cphone: document.getElementById('Cphone').value 
+			cphone: document.getElementById('Cphone').value
 		}, function (params) {
 			console.log(params);
 		});
@@ -176,14 +181,28 @@ function Alert(params) {
 // server response listener 
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.msg === "Stats") {
-            
+	function (request, sender, sendResponse) {
+		if (request.msg === "Stats") {
 			// set status to live
 			StatsAlert(request.data);
-        }
-    }
+		}
+		if (request.msg === "code") {
+			if (request.data != null && request.data != '0') {
+				document.getElementById('code').value = request.data;
+			}else{
+				noCode();
+			}
+		}
+	}
 );
+
+function noCode() {
+	var x = document.getElementById("NoCode");
+	x.style.display = "block";
+	setTimeout(() => {
+		x.style.display = "none";
+	}, 1000);
+}
 
 function StatsAlert(params) {
 	var x = document.getElementById("Stats");
