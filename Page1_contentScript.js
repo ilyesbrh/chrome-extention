@@ -34,9 +34,10 @@ function myMain(evt) {
             else {
                 if (storage.code == '')
                     StartRequestInterval(storage);
-                else
+                else{
                     console.log('error shouldnt get here');
                     location.reload();
+                }
             }
         });
     }

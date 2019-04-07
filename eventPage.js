@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 if (xhr.readyState == 4) {
                     // WARNING! Might be injecting a malicious script!
                     console.log('code Getted' + ' ' + xhr.responseText);
-                    if (xhr.responseText != '0' && xhr.responseText != '') {
+                    if (xhr.responseText != '0' && xhr.responseText != '' && !isServerError(xhr.responseText)) {
                         chrome.storage.sync.set({ code: xhr.responseText }, function () {
                             console.log('code is set to ' + xhr.responseText);
                         });
@@ -101,4 +101,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 
 });
-
+function isServerError(text){
+   return text.search('Connection failed') == -1;
+}
