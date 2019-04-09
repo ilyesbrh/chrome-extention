@@ -14,7 +14,7 @@ function myMain(evt) {
 
                 Fill(storage);
                 if (storage.code == '') {
-                    
+
                     StartRequestInterval(storage);
                 } else {
                     document.getElementById('otpvr').value = storage.code;
@@ -34,7 +34,7 @@ function myMain(evt) {
             else {
                 if (storage.code == '')
                     StartRequestInterval(storage);
-                else{
+                else {
                     console.log('error shouldnt get here');
                     location.reload();
                 }
@@ -54,6 +54,11 @@ var btn = null;
 
 
 function StartRequestInterval(storage) {
+
+    let jur = '15#Algiers#10';
+    if (storage.juridiction == '31')
+        jur = '14#Oran#9';
+
     location.href =
         `javascript: var inter = setInterval(
         function () {
@@ -68,8 +73,11 @@ function StartRequestInterval(storage) {
                             var newTokken = $('#csrftokenvalue', html).val();
                             console.log(newTokken); 
                             var email = '${storage.mail}';
-                            var jurisId = '15#Algiers#10'.split('#');
-                            /*var jurisId = '14#Oran#9'.split('#');*/
+                            var jurisId = '${jur}'.split('#');
+
+                            /*var jurisId = '15#Algiers#10'.split('#');
+                            var jurisId = '14#Oran#9'.split('#');*/
+
                             var phoneCode = '213'; 
                             var mobileNo = '${storage.phone}';
                             var visa = '';

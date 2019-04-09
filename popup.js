@@ -151,9 +151,9 @@ function importObj() {
 		});
 
 		if (objt.juridiction == "Alger")
-			chrome.storage.sync.set({ juridiction: "04" });
+			chrome.storage.sync.set({ juridiction: '04' });
 		else
-			chrome.storage.sync.set({ juridiction: "31" });
+			chrome.storage.sync.set({ juridiction: '31' });
 
 		Alert(true);
 
