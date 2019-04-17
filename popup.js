@@ -18,7 +18,7 @@ document.onreadystatechange = () => {
 };
 
 function loadCode() {
-	chrome.runtime.sendMessage({ message: 'GetServerCode', phone: document.getElementById('Dphone').innerText });
+	chrome.runtime.sendMessage({ message: 'GetServerCode', phone: document.getElementById('phone').value });
 }
 function loadServerStat() {
 	chrome.runtime.sendMessage({ message: 'GetServerStats' });
@@ -187,8 +187,9 @@ chrome.runtime.onMessage.addListener(
 			StatsAlert(request.data);
 		}
 		if (request.msg === "code") {
-			if (request.data != null && request.data != '0') {
+			if (request.data != null && request.data != '0' && request.data != '') {
 				document.getElementById('code').value = request.data;
+				console.log("if");
 			}else{
 				noCode();
 			}

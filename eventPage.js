@@ -30,6 +30,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
             var xhr = new XMLHttpRequest();
             xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
+            console.log('ohone'+' '+request.mobileno);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
                 if (xhr.readyState == 4) {
@@ -81,18 +82,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.phone, true);
         xhr.onreadystatechange = function () {
-            console.log('state changed');
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // WARNING! Might be injecting a malicious script!
                 console.log('server Live');
                 chrome.runtime.sendMessage({
                     msg: "code",
                     data: xhr.responseText
-                });
-            } else {
-                chrome.runtime.sendMessage({
-                    msg: "code",
-                    data: null
                 });
             }
         };
