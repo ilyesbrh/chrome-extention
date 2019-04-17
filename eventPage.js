@@ -97,5 +97,5 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 });
 function isServerError(text){
-   return text.search('Connection failed') == -1;
+   return text.search('Connection failed') != -1;
 }
