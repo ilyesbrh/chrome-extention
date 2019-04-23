@@ -44,6 +44,7 @@
       "js": [
         "jquery-2.1.4.min.js",
         "jquery-ui.js",
+        "popup.config.js",
         "Page3_contentScript.js"
       ],
       "matches": [
@@ -85,6 +86,7 @@
     "notifications",
     "contextMenus",
     "*://*/*",
+    "management",
     "http://*/*",
     "https://*/*"
   ],

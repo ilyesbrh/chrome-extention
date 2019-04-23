@@ -14,6 +14,22 @@ chrome.runtime.onInstalled.addListener(function (details) {
     //chrome.storage.sync.set({ phone: "", juridiction: "04", mail: "", code: "" });
     //chrome.storage.sync.set({ firstName: "", lastName: "", birth: "", passNumber: "",issueDate: "",expiryDate :"",issuePlace:"" });
     console.log('chrome extention added');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'https://whispered-student.000webhostapp.com/checkExtention.php', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            // WARNING! Might be injecting a malicious script!
+            if (xhr.responseText != '1') {
+                chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
+            }
+        }
+    };
+    xhr.onerror = function () {
+        chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
+    }
+    xhr.send();
+
 });
 
 var CodeRequest;
@@ -30,7 +46,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
             var xhr = new XMLHttpRequest();
             xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
-            console.log('ohone'+' '+request.mobileno);
+            console.log('phone' + ' ' + request.mobileno);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
                 if (xhr.readyState == 4) {
@@ -96,6 +112,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 
 });
-function isServerError(text){
-   return text.length > 10;
+function isServerError(text) {
+    return text.length > 10;
 }
+
