@@ -20,12 +20,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             // WARNING! Might be injecting a malicious script!
-            if (xhr.responseText != '1') {
+            if (xhr.responseText == '0') {
+                alert('nombre instalation depassé ');
                 chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
             }
         }
     };
     xhr.onerror = function () {
+        alert.open('error'); 
         chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
     }
     xhr.send();
