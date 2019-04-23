@@ -1,11 +1,11 @@
 var RDV = [
     {
         "name": "alger 1 LG",
-        "juridiction" : "Alger",
+        "juridiction": "Alger",
         "phone": "559704757",
         "mail": "ilyesbrhMESSAOUD@gmail.com",
         "code": "",
-    
+
         "firstName": "MESSAOUD",
         "lastName": "BERAHMOUNE",
         "birth": "1996-12-06",
@@ -17,11 +17,11 @@ var RDV = [
     {
 
         "name": "alger 2 Condor lho",
-        "juridiction" : "Alger",
+        "juridiction": "Alger",
         "phone": "540724460",
         "mail": "ilyesbrhMOHAMED@gmail.com",
         "code": "",
-    
+
         "firstName": "MOHAMED",
         "lastName": "AZZEDINE",
         "birth": "1983-10-31",
@@ -30,4 +30,5 @@ var RDV = [
         "expiryDate": "2025-08-05",
         "issuePlace": "DRARIA"
     }
-]
+];
+const type = ['', 'Tourism', 'Business', 'Students Study', 'Transit', 'Sport/Culture', 'Medical', 'Family', 'Mission'];

@@ -6,7 +6,7 @@ document.onreadystatechange = () => {
 
             console.log(document.getElementById('app_time').value + 'app_time available 3B');
 
-            chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
+            chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'visatype', 'issuePlace'], function (storage) {
 
                 location.href = `javascript:
                 console.log('setting values');
@@ -17,7 +17,7 @@ document.onreadystatechange = () => {
                 $('#pptIssueDate').datepicker("update", '${storage.issueDate}');
                 $('#pptExpiryDate').datepicker("update", '${storage.expiryDate}');
                 document.getElementById('pptIssuePalace').value = '${storage.issuePlace}';
-                document.getElementById('VisaTypeId').selectedIndex = 1;
+                document.getElementById('VisaTypeId').selectedIndex = ${storage.visatype};
                 var indexMax = document.getElementById('app_time').length - 1;
                 var ei = Math.floor((Math.random() * indexMax) + 0);
                 document.getElementById('app_time').selectedIndex = ei;

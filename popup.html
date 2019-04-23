@@ -97,7 +97,7 @@
                   </div>
                 </form>
                 <div id="NoCode" class="alert alert-warning" role="alert" style="display: none;margin-top: 10px">
-                  <strong >No Code in database</strong>.
+                  <strong>No Code in database</strong>.
                 </div>
               </div>
 
@@ -125,11 +125,12 @@
                         <label class="col-sm-3">mail:</label><label id="Dmail" class="col-sm-9"></label>
                       </div>
                       <div class="col-sm-6 px-1">
-                        <label class="col-sm-4">birth:</label><label id="Dbirth" class="col-sm-8"></label>
                         <label class="col-sm-6">passNumber:</label><label id="DpassNumber" class="col-sm-6"></label>
                         <label class="col-sm-5">issueDate:</label><label id="DissueDate" class="col-sm-7"></label>
                         <label class="col-sm-5">expiryDate:</label><label id="DexpiryDate" class="col-sm-7"></label>
                         <label class="col-sm-5">issuePlace:</label><label id="DissuePlace" class="col-sm-7"></label>
+                        <label class="col-sm-5">visatype:</label><label id="Dvisatype" class="col-sm-7"></label> <label
+                          class="col-sm-4">birth:</label><label id="Dbirth" class="col-sm-8"></label>
 
                       </div>
                     </div>
@@ -164,26 +165,43 @@
                     <div>
                       <div class="form-group float-label-control">
                         <label for="">passNumber</label>
-                        <input id="passNumber" type="text" class="form-control" placeholder="passNumber" name="something3">
+                        <input id="passNumber" type="text" class="form-control" placeholder="passNumber"
+                          name="something3">
                       </div>
                     </div>
                     <div>
                       <div class="form-group float-label-control">
                         <label for="">issueDate</label>
-                        <input id="issueDate" type="text" class="form-control" placeholder="issueDate" name="something4">
+                        <input id="issueDate" type="text" class="form-control" placeholder="issueDate"
+                          name="something4">
                       </div>
                     </div>
                     <div>
                       <div class="form-group float-label-control">
                         <label for="">expiryDate</label>
-                        <input id="expiryDate" type="text" class="form-control" placeholder="expiryDate" name="something5">
+                        <input id="expiryDate" type="text" class="form-control" placeholder="expiryDate"
+                          name="something5">
                       </div>
                     </div>
                     <div>
                       <div class="form-group float-label-control">
                         <label for="">issuePlace</label>
-                        <input id="issuePlace" type="text" class="form-control" placeholder="issuePlace" name="something5">
+                        <input id="issuePlace" type="text" class="form-control" placeholder="issuePlace"
+                          name="something5">
                       </div>
+                    </div>
+                    <div class="form-group float-label-control">
+                      <label for="">visatype</label>
+                      <select id="visatype" class="form-control" placeholder="visatype" name="something5">
+                        <option value="1">Tourism</option>
+                        <option value="2">Business</option>
+                        <option value="3">Students /Study</option>
+                        <option value="4">Transit</option>
+                        <option value="5">Sport/Culture</option>
+                        <option value="6">Medical</option>
+                        <option value="7">Family</option>
+                        <option value="7">Mission</option>
+                      </select>
                     </div>
                     <div>
                       <div class="form-group float-label-control">

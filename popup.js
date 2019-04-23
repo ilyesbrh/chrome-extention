@@ -57,6 +57,7 @@ function loadRdvInfo(index) {
 	document.getElementById('DissueDate').innerText = element.issueDate;
 	document.getElementById('DexpiryDate').innerText = element.expiryDate;
 	document.getElementById('DissuePlace').innerText = element.issuePlace;
+	document.getElementById('Dvisatype').innerText = type[element.visatype];
 }
 
 function INI() {
@@ -72,9 +73,10 @@ function INI() {
 		document.getElementById('mail').value = storage.mail;
 
 		document.getElementById('code').value = storage.code;
+		
 
 	});
-	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'issuePlace'], function (storage) {
+	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate','visatype', 'issuePlace'], function (storage) {
 		console.log(storage);
 
 		document.getElementById('firstName').value = storage.firstName;
@@ -84,6 +86,7 @@ function INI() {
 		document.getElementById('issueDate').value = storage.issueDate;
 		document.getElementById('expiryDate').value = storage.expiryDate;
 		document.getElementById('issuePlace').value = storage.issuePlace;
+		document.getElementById('visatype').value = storage.visatype;
 	});
 }
 
@@ -116,6 +119,7 @@ function page3Fill() {
 			firstName: document.getElementById('firstName').value,
 			lastName: document.getElementById('lastName').value,
 			birth: document.getElementById('birth').value,
+			visatype: document.getElementById('visatype').value,
 			passNumber: document.getElementById('passNumber').value,
 			issueDate: document.getElementById('issueDate').value,
 			expiryDate: document.getElementById('expiryDate').value,
@@ -141,6 +145,7 @@ function importObj() {
 			birth: objt.birth,
 			passNumber: objt.passNumber,
 			issueDate: objt.issueDate,
+			visatype: objt.visatype,
 			expiryDate: objt.expiryDate,
 			issuePlace: objt.issuePlace,
 			code: objt.code,
@@ -190,7 +195,7 @@ chrome.runtime.onMessage.addListener(
 			if (request.data != null && request.data != '0' && request.data != '') {
 				document.getElementById('code').value = request.data;
 				console.log("if");
-			}else{
+			} else {
 				noCode();
 			}
 		}
