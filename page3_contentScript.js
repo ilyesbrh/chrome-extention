@@ -15,7 +15,7 @@ document.onreadystatechange = () => {
                 document.getElementById('pptExpiryDate').value = rdv.expiryDate;
                 document.getElementById('pptIssuePalace').value = rdv.issuePlace;
                 document.getElementById('VisaTypeId').selectedIndex = rdv.visatype;
-        
+
                 var indexMax = document.getElementById('app_time').length - 1;
                 var ei = Math.floor((Math.random() * indexMax) + 0);
                 document.getElementById('app_time').selectedIndex = ei;
@@ -30,7 +30,7 @@ document.onreadystatechange = () => {
             button.innerHTML = RDV[i].name;
             divC.insertBefore(button, document.getElementsByTagName('tbody')[0]);
             button.onclick = dataR(i);
-            
+
             button.style = "cursor: pointer; border:1,5px solid #000;float: center; font-size: 12px; padding: 6px; width: 120px; margin-bottom: 4px;"
         }
 
