@@ -10,6 +10,7 @@ document.onreadystatechange = () => {
 		document.getElementById('SettingsPage1').onclick = page1Fill;
 		document.getElementById('SettingsPage3').onclick = page3Fill;
 		document.getElementById('load').onclick = loadCode;
+		document.getElementById('clear').onclick = clearDB;
 		document.getElementById('importObj').onclick = importObj;
 		INI();
 		loadRDV();
@@ -19,6 +20,9 @@ document.onreadystatechange = () => {
 
 function loadCode() {
 	chrome.runtime.sendMessage({ message: 'GetServerCode', phone: document.getElementById('phone').value });
+}
+function clearDB() {
+	chrome.runtime.sendMessage({ message: 'ClearServerCode', phone: document.getElementById('phone').value });
 }
 function loadServerStat() {
 	chrome.runtime.sendMessage({ message: 'GetServerStats' });
@@ -160,6 +164,8 @@ function importObj() {
 		else
 			chrome.storage.sync.set({ juridiction: '31' });
 
+		INI();
+
 		Alert(true);
 
 		console.log('saved');
@@ -191,19 +197,27 @@ chrome.runtime.onMessage.addListener(
 			// set status to live
 			StatsAlert(request.data);
 		}
+		if (request.msg === "cleared") {
+			// set status to live
+			document.getElementById('code').value = '';
+			bottomAlert('Database cleared');
+			page1Fill();//save cleared code
+		}
 		if (request.msg === "code") {
 			if (request.data != null && request.data != '0' && request.data != '') {
 				document.getElementById('code').value = request.data;
+				page1Fill();
 				console.log("if");
 			} else {
-				noCode();
+				bottomAlert('No Code in database');
 			}
 		}
 	}
 );
 
-function noCode() {
-	var x = document.getElementById("NoCode");
+function bottomAlert(msg) {
+	var x = document.getElementById("BottomAlert");
+	x.innerText = msg;
 	x.style.display = "block";
 	setTimeout(() => {
 		x.style.display = "none";

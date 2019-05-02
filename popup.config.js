@@ -37,7 +37,7 @@ var RDV = [
         "name": "alger 3 yaya",
         "juridiction": "Alger",
         "phone": "540724460",
-        "mail": "ilyesbrhAZZEDINE@gmail.com",
+        "mail": "ilyesbrhDERROUICHE@gmail.com",
         "code": "",
         
         "firstName": "TAHAR",

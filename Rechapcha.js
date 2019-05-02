@@ -16,17 +16,7 @@ chrome.storage.sync.get(['code'], function (storage) {
     }
 }); */
 
-
-
-/**
- *
- * because we dont need captcha special condition anymore (code present) so we leave captcha click to the original extention
- *
- */
-
-
-
-/* var sid;
+var sid;
 sid = setInterval(
     function () {
         if (window.location.href.match(/https:\/\/www.google.com\/recaptcha\/api\d\/anchor/) && $("#recaptcha-anchor div.recaptcha-checkbox-checkmark").length
@@ -55,4 +45,3 @@ function isScrolledIntoView(elem) {
 
     return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 }
- */

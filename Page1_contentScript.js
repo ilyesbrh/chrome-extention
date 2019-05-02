@@ -1,4 +1,3 @@
-/* if Page 2 */
 window.addEventListener("load", myMain, false);
 
 function myMain(evt) {
@@ -14,8 +13,8 @@ function myMain(evt) {
 
                 Fill(storage);
                 if (storage.code == '') {
-
                     StartRequestInterval(storage);
+
                 } else {
                     document.getElementById('otpvr').value = storage.code;
                     location.href = `javascript:
@@ -32,8 +31,9 @@ function myMain(evt) {
                 }
             }
             else {
-                if (storage.code == '')
+                if (storage.code == '') {
                     StartRequestInterval(storage);
+                }
                 else {
                     console.log('error shouldnt get here');
                     location.reload();
@@ -51,7 +51,6 @@ var popUp;
 
 //UI
 var btn = null;
-
 
 function StartRequestInterval(storage) {
 
@@ -111,11 +110,12 @@ function StartRequestInterval(storage) {
                     });
                 });
         }, 5000);`;
+    setInterval(() => {
+        chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
+    }, 6000);
     console.log('starting server');
     console.log('Do not forget to restart extention');
-    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
 }
-
 function Fill(storage) {
     location.href = "javascript:showQuestion(); void 0";
     document.getElementById('phone').value = storage.phone;
@@ -135,6 +135,7 @@ function Fill(storage) {
     }, 200);
     console.log(storage.code);
 }
+
 // code listener
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log(request);

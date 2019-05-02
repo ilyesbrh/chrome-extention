@@ -112,6 +112,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         };
         xhr.send();
 
+    } else if(request.message == 'ClearServerCode'){
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", BASE_URL+'Delete.php?Phone=' + request.phone, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // WARNING! Might be injecting a malicious script!
+                chrome.runtime.sendMessage({
+                    msg: "cleared",
+                    data: xhr.responseText
+                });
+            }
+        };
+        xhr.send();
+
     }
 
 });
