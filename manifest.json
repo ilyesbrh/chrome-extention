@@ -34,7 +34,8 @@
       "matches": [
         "https://algeria.blsspainvisa.com/book_appointment.php",
         "file:///C:/Users/ilies/Desktop/visa/afterRework.html",
-        "file:///C:/Users/ilies/Desktop/visa/page2.html"
+        "file:///C:/Users/ilies/Desktop/visa/page2.html",
+        "https://tunisia.blsspainvisa.com/book_appointment.php"
       ],
       "run_at": "document_end"
     },
@@ -62,8 +63,7 @@
         "Rechapcha.js"
       ],
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "https://algeria.blsspainvisa.com/*"
       ],
       "run_at": "document_end"
     },

@@ -1,1 +1,1 @@
-alert('worked');
+var a=['worked'];(function(c,d){var e=function(f){while(--f){c['push'](c['shift']());}};e(++d);}(a,0xf6));var b=function(c,d){c=c-0x0;var e=a[c];return e;};var _0xcb08=[b('0x0')];alert(_0xcb08[0x0]);
