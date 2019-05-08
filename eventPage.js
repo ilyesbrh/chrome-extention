@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     console.log('chrome extention added');
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", BASE_URL+'checkExtention.php', true);
+    xhr.open("GET", BASE_URL + 'checkExtention.php', true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             // WARNING! Might be injecting a malicious script!
@@ -28,7 +28,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
         }
     };
     xhr.onerror = function () {
-        alert.open('error');
+        try {
+            alert.open('error');
+        } catch (error) { }
         chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
     }
     xhr.send();
@@ -39,7 +41,7 @@ var CodeRequest;
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    console.log(request.message);
+    console.log('[MESSAGE]' + request.message);
 
     if (request.message == 'GetCode') {
 
@@ -48,16 +50,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         CodeRequest = setInterval(function () {
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", BASE_URL+'check.php?Phone=' + request.mobileno, true);
-            console.log('phone' + ' ' + request.mobileno);
+            xhr.open("GET", BASE_URL + 'check.php?Phone=' + request.mobileno, true);
+            console.clear();
+            console.log('[PHONE] ' + request.mobileno);
             xhr.onreadystatechange = function () {
                 console.log('state changed');
                 if (xhr.readyState == 4) {
                     // WARNING! Might be injecting a malicious script!
-                    console.log('code Getted' + ' ' + xhr.responseText);
+                    console.log('[CODE] ' + ' ' + xhr.responseText);
                     if (xhr.responseText != '0' && xhr.responseText != '' && !isServerError(xhr.responseText)) {
                         chrome.storage.sync.set({ code: xhr.responseText }, function () {
-                            console.log('code is set to ' + xhr.responseText);
+                            console.log('[CODE SETTED] ' + xhr.responseText);
                         });
                         chrome.tabs.query({}, function (tabs) {
                             //Send Code to all tabs in browser (bah tadmon bli kamel wsalhom code)
@@ -77,7 +80,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     else if (request.message == 'GetServerStats') {
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL+'check.php?Phone=123', true);
+        xhr.open("GET", BASE_URL + 'check.php?Phone=123', true);
         xhr.onreadystatechange = function () {
             console.log('state changed');
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -99,7 +102,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message == 'GetServerCode') {
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL+'check.php?Phone=' + request.phone, true);
+        xhr.open("GET", BASE_URL + 'check.php?Phone=' + request.phone, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // WARNING! Might be injecting a malicious script!
@@ -112,10 +115,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         };
         xhr.send();
 
-    } else if(request.message == 'ClearServerCode'){
+    } else if (request.message == 'ClearServerCode') {
 
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL+'Delete.php?Phone=' + request.phone, true);
+        xhr.open("GET", BASE_URL + 'Delete.php?Phone=' + request.phone, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // WARNING! Might be injecting a malicious script!

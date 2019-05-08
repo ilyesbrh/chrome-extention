@@ -70,7 +70,8 @@ function StartRequestInterval(storage) {
                         success: function (data) {
                             var html = $(data);
                             var newTokken = $('#csrftokenvalue', html).val();
-                            console.log(newTokken); 
+                            console.clear();
+                            console.log('[TOKEN] ' +newTokken); 
                             var email = '${storage.mail}';
                             var jurisId = '${jur}'.split('#');
 
@@ -80,13 +81,13 @@ function StartRequestInterval(storage) {
                             var phoneCode = '213'; 
                             var mobileNo = '${storage.phone}';
                             var visa = '';
-                            console.log(email+' '+jurisId+' '+mobileNo);
+                            console.log('[info] '+email+' '+jurisId+' '+mobileNo);
                             $.ajax({
                                 type: "POST",
                                 data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken, 
                                 url: "ajax.php",
                                 success: function (response) {
-                                    console.log(response.trim());
+                                    console.log('[RESPONSE] '+response.trim());
                                     if (response.trim() == "full") {
                                         $("#reponse_div").html("full :3");
                                     } else if (response.trim() == "fail") {
@@ -133,7 +134,7 @@ function Fill(storage) {
             clearInterval(popUp);
         }
     }, 200);
-    console.log(storage.code);
+    console.log('[CODE] '+storage.code);
 }
 
 // code listener
