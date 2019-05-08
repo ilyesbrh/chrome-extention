@@ -1,9 +1,9 @@
 var RDV = [
     {
         
-        "name": "alger 2 Condor",
+        "name": "alger 1 Condor",
         "juridiction": "Alger",
-        "phone": "540724460",
+        "phone": "698880756",
         "mail": "ilyesbrhAZZEDINE@gmail.com",
         "code": "",
         
@@ -14,7 +14,24 @@ var RDV = [
         "issueDate": "2015-01-19",
         "expiryDate": "2025-01-19",
         "issuePlace": "TIZI OUZOU",
-        "visatype": 1
+        "visatype": 2
+    },
+    {
+        
+        "name": "alger 2 LG",
+        "juridiction": "Alger",
+        "phone": "540724460",
+        "mail": "ilyesbrhAZZEDINE@gmail.com",
+        "code": "",
+        
+        "firstName": "HOUDA",
+        "lastName": "BENCHERIF",
+        "birth": "1989-05-24",
+        "passNumber": 155767339,
+        "issueDate": "2015-04-12",
+        "expiryDate": "2025-04-11",
+        "issuePlace": "B B ARRERIDJ",
+        "visatype": 2
     }
 ];
 const type = ['', 'Tourism', 'Business', 'Students Study', 'Transit', 'Sport/Culture', 'Medical', 'Family', 'Mission'];
