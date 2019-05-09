@@ -93,6 +93,8 @@ function StartRequestInterval(storage) {
                                     } else if (response.trim() == "fail") {
                                     } else if (response.trim() == "same") {
                                         $("#reponse_div").html("true");
+                                        var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
+                                        typeWriter.play();
                                         clearInterval(inter);
                                     } else if (response.trim() == "error") {
                                     } else if (response.trim() == "CSRF Token validation Failed") {
