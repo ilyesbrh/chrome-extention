@@ -18,7 +18,7 @@ $(function(){
         chrome.storage.sync.set({'total': 0},function(){
             let notification = {
                 type: 'basic',
-                iconUrl: 'images/get_started128.png',
+                iconUrl: 'images/get_started48.png',
                 title: 'Total reset!',
                 message: 'total has been reset :('
             }

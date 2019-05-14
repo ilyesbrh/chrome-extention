@@ -7,7 +7,7 @@
 function isInt(value) {
     return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }
-var BASE_URL = 'https://iliesbourouh.000webhostapp.com/';
+var BASE_URL = 'https://zikoarulo.000webhostapp.com/';
 
 chrome.runtime.onInstalled.addListener(function (details) {
 

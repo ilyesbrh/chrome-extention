@@ -42,7 +42,7 @@ document.onreadystatechange = () => {
                     location.href = `javascript:
                     console.log('setting values');
                     document.getElementById('first_name').value = '${storage.firstName}';
-                    document.getElementById('last_name').value =' ${storage.lastName}';
+                    document.getElementById('last_name').value = '${storage.lastName}';
                     document.getElementById('passport_no').value = '${storage.passNumber}';
                     $('#dateOfBirth').datepicker("update", '${storage.birth}');
                     $('#pptIssueDate').datepicker("update", '${storage.issueDate}');
