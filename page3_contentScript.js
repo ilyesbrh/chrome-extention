@@ -1,3 +1,28 @@
+/**
+ *
+ * this work is done by ILIES bourouh :') help me to find a work .i.
+ *
+ */
+var time = 500;
+
+(function () {
+    if (document.title == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'Problem loading page') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == '503 Service Temporarily Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == '500 Internal Server Error') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'Database error') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'FastCGI Error') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'The connection has timed out') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'Problemas al cargar la página') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == 'Error 502 (Server Error)!!1') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.getElementsByTagName('h1')[0].innerHTML == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Error 503 Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.getElementsByTagName('h1')[0].innerHTML == '404 Not Found') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.getElementsByTagName('h1')[0].innerHTML == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
+})();
 
 document.onreadystatechange = () => {
     if (document.readyState === 'complete') {
