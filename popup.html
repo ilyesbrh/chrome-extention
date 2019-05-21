@@ -17,6 +17,22 @@
 <body>
   <div id="bodyy" class="div container-fluid py-5" style="min-height: 100vh;">
     <div id="tabs" class="container shadow-lg rounded px-0">
+      <nav class="navbar navbar-expand-sm navbar-light bg-transparent align-items-center">
+        <h1 class="text-white" href="#">SLB</h1>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          </ul>
+          <div class="form-inline my-2 my-lg-0">
+            <input id="client" class="form-control mr-sm-2" type="text" placeholder="user" >
+            <button id="loadRDV" class="btn btn-primary my-2 my-sm-0">Load</button>
+          </div>
+
+        </div>
+      </nav>
       <div class="container">
         <h6 class="section-title h1">SLB</h6>
         <div id="Stats" class="alert alert-warning" role="alert" style="display: none">
@@ -130,7 +146,7 @@
                         <label class="col-sm-5">issueDate:</label><label id="DissueDate" class="col-sm-7"></label>
                         <label class="col-sm-5">expiryDate:</label><label id="DexpiryDate" class="col-sm-7"></label>
                         <label class="col-sm-5">issuePlace:</label><label id="DissuePlace" class="col-sm-7"></label>
-                        <label class="col-sm-5">visatype:</label><label id="Dvisatype" class="col-sm-7"></label> 
+                        <label class="col-sm-5">visatype:</label><label id="Dvisatype" class="col-sm-7"></label>
 
                       </div>
                     </div>

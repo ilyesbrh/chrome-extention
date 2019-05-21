@@ -93,8 +93,8 @@ document.onreadystatechange = () => {
                 }
 
                 console.log(available_dates);
-                if (available_dates.length > 1) {
-                    document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);
+                if (available_dates.length > 2) {
+                    document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 3]);
                 } else {
                     document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
                 }

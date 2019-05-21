@@ -3,11 +3,17 @@
  * this work is by ILIES bourouh :') help me to find a work .i.
  *
  */
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
 
-function isInt(value) {
-    return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
-}
-var BASE_URL = 'https://zikoarulo.000webhostapp.com/';
+var pusher = new Pusher('ac31c0012dc8ff3814c8', {
+    cluster: 'eu',
+    forceTLS: true
+});
+
+var channel = pusher.subscribe('sms');
+
+var BASE_URL = 'https://iliesbourouh.000webhostapp.com/';
 
 chrome.runtime.onInstalled.addListener(function (details) {
 
@@ -16,6 +22,35 @@ chrome.runtime.onInstalled.addListener(function (details) {
     //chrome.storage.sync.set({ firstName: "", lastName: "", birth: "", passNumber: "",issueDate: "",expiryDate :"",issuePlace:"" });
     console.log('chrome extention added');
 
+    checkExtension();
+
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+
+    console.log('[MESSAGE]' + request.message);
+    var xhr = new XMLHttpRequest();
+    switch (request.message) {
+        case 'GetCode':
+            getcode(request);
+            break;
+        case 'GetServerStats':
+            GetServerStats(xhr);
+            break;
+        case 'GetServerCode':
+            GetServerCode(xhr, request);
+            break;
+        case 'ClearServerCode':
+            ClearServerCode(xhr, request);
+            break;
+        default:
+            break;
+    }
+
+});
+
+function checkExtension() {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", BASE_URL + 'checkExtention.php', true);
     xhr.onreadystatechange = function () {
@@ -23,117 +58,82 @@ chrome.runtime.onInstalled.addListener(function (details) {
             // WARNING! Might be injecting a malicious script!
             if (xhr.responseText == '0') {
                 alert('nombre instalation depassé ');
-                chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
+                //chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
             }
         }
     };
     xhr.onerror = function () {
         try {
             alert.open('error');
-        } catch (error) { }
-        chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
-    }
+        }
+        catch (error) { }
+        //chrome.management.uninstallSelf({ showConfirmDialog: false }, () => { });
+    };
     xhr.send();
+}
 
-});
+function ClearServerCode(xhr, request) {
+    xhr.open("GET", BASE_URL + 'Delete.php?Phone=' + request.phone, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // WARNING! Might be injecting a malicious script!
+            chrome.runtime.sendMessage({
+                msg: "cleared",
+                data: xhr.responseText
+            });
+        }
+    };
+    xhr.send();
+}
 
-var CodeRequest;
+function GetServerCode(xhr, request) {
+    xhr.open("GET", BASE_URL + 'check.php?Phone=' + request.phone, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // WARNING! Might be injecting a malicious script!
+            console.log('server Live');
+            chrome.runtime.sendMessage({
+                msg: "code",
+                data: xhr.responseText
+            });
+        }
+    };
+    xhr.send();
+}
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+function GetServerStats(xhr) {
+    xhr.open("GET", BASE_URL + 'check.php?Phone=123', true);
+    xhr.onreadystatechange = function () {
+        console.log('state changed');
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // WARNING! Might be injecting a malicious script!
+            console.log('server Live');
+            chrome.runtime.sendMessage({
+                msg: "Stats",
+                data: true
+            });
+        }
+        else {
+            chrome.runtime.sendMessage({
+                msg: "Stats",
+                data: false
+            });
+        }
+    };
+    xhr.send();
+}
 
-    console.log('[MESSAGE]' + request.message);
-
-    if (request.message == 'GetCode') {
-
-        clearInterval(CodeRequest);
-        CodeRequest = null;
-        CodeRequest = setInterval(function () {
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", BASE_URL + 'check.php?Phone=' + request.mobileno, true);
-            console.clear();
-            console.log('[PHONE] ' + request.mobileno);
-            xhr.onreadystatechange = function () {
-                console.log('state changed');
-                if (xhr.readyState == 4) {
-                    // WARNING! Might be injecting a malicious script!
-                    console.log('[CODE] ' + ' ' + xhr.responseText);
-                    if (xhr.responseText != '0' && xhr.responseText != '' && !isServerError(xhr.responseText)) {
-                        chrome.storage.sync.set({ code: xhr.responseText }, function () {
-                            console.log('[CODE SETTED] ' + xhr.responseText);
-                        });
-                        chrome.tabs.query({}, function (tabs) {
-                            //Send Code to all tabs in browser (bah tadmon bli kamel wsalhom code)
-                            tabs.forEach(tab => {
-                                chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: xhr.responseText });
-                            });
-                        });
-                        clearInterval(CodeRequest);
-                        CodeRequest = null;
-                    }
-                }
-            };
-            xhr.send();
-        }, 1000);
-
-    }
-    else if (request.message == 'GetServerStats') {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL + 'check.php?Phone=123', true);
-        xhr.onreadystatechange = function () {
-            console.log('state changed');
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // WARNING! Might be injecting a malicious script!
-                console.log('server Live');
-                chrome.runtime.sendMessage({
-                    msg: "Stats",
-                    data: true
-                });
-            } else {
-                chrome.runtime.sendMessage({
-                    msg: "Stats",
-                    data: false
-                });
-            }
-        };
-        xhr.send();
-
-    } else if (request.message == 'GetServerCode') {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL + 'check.php?Phone=' + request.phone, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // WARNING! Might be injecting a malicious script!
-                console.log('server Live');
-                chrome.runtime.sendMessage({
-                    msg: "code",
-                    data: xhr.responseText
-                });
-            }
-        };
-        xhr.send();
-
-    } else if (request.message == 'ClearServerCode') {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", BASE_URL + 'Delete.php?Phone=' + request.phone, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // WARNING! Might be injecting a malicious script!
-                chrome.runtime.sendMessage({
-                    msg: "cleared",
-                    data: xhr.responseText
-                });
-            }
-        };
-        xhr.send();
-
-    }
-
-});
-function isServerError(text) {
-    return text.length > 10;
+function getcode(request) {
+    channel.unbind();
+    channel.bind(request.mobileno + '', function (code) {
+        console.log('[CODE] ' + ' ' + code);
+        chrome.storage.sync.set({ code: code });
+        chrome.tabs.query({}, function (tabs) {
+            //Send Code to all tabs in browser (bah tadmon bli kamel wsalhom code)
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: code });
+            });
+        });
+    });
 }
 

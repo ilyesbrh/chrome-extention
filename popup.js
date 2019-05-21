@@ -3,6 +3,7 @@
  * this work is by ILIES bourouh :') help me to find a work .i.
  *
  */
+var BASE_URL = 'https://iliesbourouh.000webhostapp.com/';
 
 document.onreadystatechange = () => {
 	if (document.readyState === 'complete') {
@@ -12,6 +13,7 @@ document.onreadystatechange = () => {
 		document.getElementById('load').onclick = loadCode;
 		document.getElementById('clear').onclick = clearDB;
 		document.getElementById('importObj').onclick = importObj;
+		document.getElementById('loadRDV').onclick = loadRDV;
 		INI();
 		loadRDV();
 		loadServerStat();
@@ -30,28 +32,61 @@ function loadServerStat() {
 
 function loadRDV() {
 
-	var x = document.getElementById("selectRDV");
+	var client = document.getElementById("client").value;
 
-	x.onchange = function (params) {
-		loadRdvInfo(x.value);
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", BASE_URL + 'rdv.php?' + 'client=' + client, true);
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
+			// WARNING! Might be injecting a malicious script!
+			if (xhr.response) {
+				console.log(JSON.parse(xhr.response)[0]);
+				RDV = JSON.parse(xhr.response)[0];
+				
+				var select = document.getElementById("selectRDV");
+				select.onchange = function (params) {
+					loadRdvInfo(select.value);
+				};
+				
+				removeAllOptions(select);
+
+				for (let index = 0; index < RDV.length; index++) {
+					const element = RDV[index];
+					addOption(select,element.rdvName,index);
+				}
+				
+				loadRdvInfo(select.value);
+
+				Alert(true);
+			}
+		}
 	};
-
-	for (let index = 0; index < RDV.length; index++) {
-		const element = RDV[index];
-		var option = document.createElement("option");
-		option.text = element.name;
-		option.value = index;
-		x.add(option);
-	}
-
-	loadRdvInfo(x.value);
+	xhr.onerror = function () {
+		Alert(false);
+	};
+	xhr.send();
 
 }
+
+function addOption(select,name,index){
+	select.options[select.options.length] = new Option(name, index);
+}
+
+function removeOption(){
+	var select = document.getElementById("dynamic-select");
+	select.options[select.options.length - 1] = null;
+}
+
+function removeAllOptions(select){
+	select.options.length = 0;
+}
+
 function loadRdvInfo(index) {
 	const element = RDV[index];
 
+	document.getElementById('name').innerText = element.rdvName;
 	document.getElementById('Dphone').innerText = element.phone;
-	document.getElementById('Dmail').innerText = element.mail;
+	document.getElementById('Dmail').innerText = element.email;
 	document.getElementById('Djuridiction').innerText = element.juridiction;
 
 	document.getElementById('DfirstName').innerText = element.firstName;
@@ -61,7 +96,7 @@ function loadRdvInfo(index) {
 	document.getElementById('DissueDate').innerText = element.issueDate;
 	document.getElementById('DexpiryDate').innerText = element.expiryDate;
 	document.getElementById('DissuePlace').innerText = element.issuePlace;
-	document.getElementById('Dvisatype').innerText = type[element.visatype];
+	document.getElementById('Dvisatype').innerText = type[element.visaType];
 }
 
 function INI() {
@@ -77,10 +112,10 @@ function INI() {
 		document.getElementById('mail').value = storage.mail;
 
 		document.getElementById('code').value = storage.code;
-		
+
 
 	});
-	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate','visatype', 'issuePlace'], function (storage) {
+	chrome.storage.sync.get(['firstName', 'lastName', 'birth', 'passNumber', 'issueDate', 'expiryDate', 'visatype', 'issuePlace'], function (storage) {
 		console.log(storage);
 
 		document.getElementById('firstName').value = storage.firstName;
@@ -153,7 +188,7 @@ function importObj() {
 			expiryDate: objt.expiryDate,
 			issuePlace: objt.issuePlace,
 			code: objt.code,
-			name: objt.name,
+			name: objt.rdvName,
 			phone: objt.phone,
 			mail: objt.mail
 		}, function (params) {
@@ -174,20 +209,6 @@ function importObj() {
 		Alert(false);
 	}
 }
-function Alert(params) {
-	var x = document.getElementById("Alert");
-	if (params) {
-		document.getElementById("alert-msg").innerHTML = "Imported Successfuly!";
-	} else {
-		document.getElementById("alert-msg").innerHTML = "Fail to Import Data!";
-	}
-	x.style.display = "block";
-
-	setTimeout(() => {
-		x.style.display = "none";
-	}, 6000);
-}
-
 
 // server response listener 
 
@@ -214,6 +235,20 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
+
+function Alert(params) {
+	var x = document.getElementById("Alert");
+	if (params) {
+		document.getElementById("alert-msg").innerHTML = "Imported Successfuly!";
+	} else {
+		document.getElementById("alert-msg").innerHTML = "Fail to Import Data!";
+	}
+	x.style.display = "block";
+
+	setTimeout(() => {
+		x.style.display = "none";
+	}, 6000);
+}
 
 function bottomAlert(msg) {
 	var x = document.getElementById("BottomAlert");

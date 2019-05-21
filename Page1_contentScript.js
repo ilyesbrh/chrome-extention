@@ -81,7 +81,9 @@ function StartRequestInterval(storage) {
                             var phoneCode = '213'; 
                             var mobileNo = '${storage.phone}';
                             var visa = '';
-                            console.log('[info] '+email+' '+jurisId+' '+mobileNo);
+                            console.log('[MAIL] '+ email);
+                            console.log('[NUMBER] '+ mobileNo);
+                            console.log('[JURIS] '+ jurisId[1]);
                             $.ajax({
                                 type: "POST",
                                 data: "gofor=send_mail&email=" + email + "&phone_code=" + phoneCode + "&phone_no=" + mobileNo + "&center_id=" + jurisId[2] + "&visa=" + visa + "&token=" + newTokken, 
@@ -113,11 +115,15 @@ function StartRequestInterval(storage) {
                     });
                 });
         }, 5000);`;
+
+    /* 
     setInterval(() => {
         chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-    }, 6000);
+    }, 6000); 
+    */
+
+    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
     console.log('starting server');
-    console.log('Do not forget to restart extention');
 }
 function Fill(storage) {
     location.href = "javascript:showQuestion(); void 0";
@@ -136,7 +142,7 @@ function Fill(storage) {
             clearInterval(popUp);
         }
     }, 200);
-    console.log('[CODE] '+storage.code);
+    console.log('[CODE] ' + storage.code);
 }
 
 // code listener
