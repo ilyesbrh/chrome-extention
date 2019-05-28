@@ -7,6 +7,7 @@ var time = 500;
 
 (function () {
     if (document.title == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == '403 Forbidden') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Problem loading page') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == '503 Service Temporarily Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
@@ -17,11 +18,6 @@ var time = 500;
     else if (document.title == 'The connection has timed out') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Problemas al cargar la página') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Error 502 (Server Error)!!1') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Error 503 Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '404 Not Found') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
 })();
 
 document.onreadystatechange = () => {
@@ -119,7 +115,7 @@ document.onreadystatechange = () => {
 
                 console.log(available_dates);
                 if (available_dates.length > 2) {
-                    document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 3]);
+                    document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);
                 } else {
                     document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
                 }

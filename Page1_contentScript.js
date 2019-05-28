@@ -3,10 +3,11 @@
  * this work is done by ILIES bourouh :') help me to find a work .i.
  *
  */
-var time = 500;
+var time = 1000;
 
 (function () {
     if (document.title == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
+    else if (document.title == '403 Forbidden') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Problem loading page') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == '503 Service Temporarily Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
@@ -17,11 +18,6 @@ var time = 500;
     else if (document.title == 'The connection has timed out') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Problemas al cargar la página') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == 'Error 502 (Server Error)!!1') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == 'Error 503 Service Unavailable') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '404 Not Found') { setTimeout(function () { window.location.reload(true); }, time); }
-    else if (document.getElementsByTagName('h1')[0].innerHTML == '504 Gateway Time-out') { setTimeout(function () { window.location.reload(true); }, time); }
 })();
 
 window.addEventListener("load", myMain, false);
@@ -142,12 +138,11 @@ function StartRequestInterval(storage) {
                 });
         }, 5000);`;
 
-    /* 
+    
     setInterval(() => {
         chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
     }, 6000); 
-    */
-
+    
     chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
     console.log('starting server');
 }
