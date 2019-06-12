@@ -3,8 +3,17 @@
  * this work is done by ILIES bourouh :') help me to find a work .i.
  *
  */
-var time = 1000;
 
+/* variables */
+
+var time = 1000;//time to refresh if page had error
+
+//intervals
+
+var jurid; // this one for setting jurisdiction id
+var popUp; // this one to close popup
+
+/* this section for error's that occur when loading pages */
 (function () {
     if (document.title == '502 Bad Gateway') { setTimeout(function () { window.location.reload(true); }, time); }
     else if (document.title == '403 Forbidden') { setTimeout(function () { window.location.reload(true); }, time); }
@@ -20,36 +29,57 @@ var time = 1000;
     else if (document.title == 'Error 502 (Server Error)!!1') { setTimeout(function () { window.location.reload(true); }, time); }
 })();
 
+// code listener
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log('[CODE] ' + request.PhoneCode);
+    if (request.message == 'SetCode') {
+        location.href = `javascript: $('#otpvr').val(${request.PhoneCode})`;
+    }
+});
+
+/* this is the main event that trigger myMain function */
+// he only start when page fully loaded 
 window.addEventListener("load", myMain, false);
 
+/**
+ * @description the main function barely all logic is here
+ * @param {*} evt 
+ */
 function myMain(evt) {
-    console.log('Start');
 
+
+    $('.row .fontweightNone .marginBottomNone').bind("DOMSubtreeModified", function () {
+        location.reload();
+    });
+
+    console.log('[Start] application started');
+
+    /* if page 1 B (Term and conditions page ) */
     if (document.getElementsByName('agree')[0]) {
         document.getElementsByName('agree')[0].click();
     }
+    /* if page 1 A */
     else {
+        /* loading info's */
         chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
 
+            /* if 'otpvr' exist then page 1 A is open */
             if (document.getElementById('otpvr')) {
 
-                Fill(storage);
+                /* send info's to initialize them */
+                initialize(storage);
+
                 if (storage.code == '') {
+                    //demand code
                     StartRequestInterval(storage);
+                    //wait for code
+                    waitForCode();
 
                 } else {
+                    //set code value in target input
                     document.getElementById('otpvr').value = storage.code;
-                    location.href = `javascript:
-                    var intrval = setInterval(() => {
-                        var g =grecaptcha.getResponse();
-                        if(g != ''){
-                            document.getElementsByName('save')[0].click();
-                            console.log("redirecting");
-                            clearInterval(intrval);
-                        }else{
-                            console.log('not checked yet');
-                        }
-                    }, 500);`;
+                    //wait for code
+                    waitForCode();
                 }
             }
             else {
@@ -65,20 +95,69 @@ function myMain(evt) {
     }
 }
 
-//intervals
-var CodeRequest;
-var blsRequest;
-var jurid;
-var popUp;
+function waitForCode() {
+    location.href = `javascript:
+                    var intrval = setInterval(() => {
+                        var g = '';
+                        try{
+                            g = grecaptcha.getResponse();
+                        }catch(error){
+                        }
+                        if(g != '' && $('#otpvr').val() != "" ){
+                            document.getElementsByName('save')[0].click();
+                            console.log("[REDIRECT]");
+                            clearInterval(intrval);
+                        }else{
+                            console.log('[WAITING] recaptcha or code not filled yet');
+                        }
+                    }, 250);`;
+}
 
-//UI
-var btn = null;
+/**
+ * @description initializing all needed input's when website opened
+ * @param storage The event.
+ * @returns null
+ */
+function initialize(storage) {
+    /* show question */
+    location.href = "javascript:showQuestion(); void 0";
+    /* setup input's */
+    document.getElementById('phone').value = storage.phone;
+    document.getElementById('email').value = storage.mail;
 
+    /* if it work keep it :)  ( i dont know why i repeated the same element )*/
+    document.getElementById('juridiction').value = storage.juridiction; // alger 15#Algiers#10 Oran 14#Oran#9 
+    jurid = setInterval(function () {
+        if (document.getElementById('juridiction') != null) {
+            document.getElementById('juridiction').selectedIndex = storage.juridiction; // 04 alger  31 Oran
+            clearInterval(jurid);
+        }
+    }, 200);
+
+    /* this one to close a popup that came in website opening */
+    popUp = setInterval(function () {
+        if (document.getElementsByClassName("popup-appCloseIcon")[0] != null) {
+            document.getElementsByClassName("popup-appCloseIcon")[0].click();
+            clearInterval(popUp);
+        }
+    }, 200);
+
+    console.log('[CODE] ' + storage.code);
+}
+/**
+ * 
+ * @param {*} storage 
+ */
 function StartRequestInterval(storage) {
 
+    // '15#Algiers#10' or '14#Oran#9' is special for the jurid select in the website
+
+    // set dafault to alger
     let jur = '15#Algiers#10';
+    // if juridiction equal to 31 then set value to oran
     if (storage.juridiction == '31')
         jur = '14#Oran#9';
+
 
     location.href =
         `javascript: var inter = setInterval(
@@ -96,10 +175,6 @@ function StartRequestInterval(storage) {
                             console.log('[TOKEN] ' +newTokken); 
                             var email = '${storage.mail}';
                             var jurisId = '${jur}'.split('#');
-
-                            /*var jurisId = '15#Algiers#10'.split('#');
-                            var jurisId = '14#Oran#9'.split('#');*/
-
                             var phoneCode = '213'; 
                             var mobileNo = '${storage.phone}';
                             var visa = '';
@@ -116,15 +191,15 @@ function StartRequestInterval(storage) {
                                         $("#reponse_div").html("full :3");
                                     } else if (response.trim() == "fail") {
                                     } else if (response.trim() == "same") {
-                                        $("#reponse_div").html("true");
-                                        var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
-                                        typeWriter.play();
                                         clearInterval(inter);
+                                        $("#reponse_div").html("code sended");
+                                        $(".row .fontweightNone .marginBottomNone").html("same SMS");
                                     } else if (response.trim() == "error") {
                                     } else if (response.trim() == "CSRF Token validation Failed") {
                                     } else if (response.trim() == "pass") {
-                                        $("#reponse_div").html("true");
                                         clearInterval(inter);
+                                        $("#reponse_div").html("true");
+                                        $(".row .fontweightNone .marginBottomNone").html("SMS sent");
                                     } else {
                                     }
                                 }
@@ -132,44 +207,20 @@ function StartRequestInterval(storage) {
                         }, error: function (xhr, ajaxOptions, thrownError) { 
                             console.log('xHR: ' + xhr); 
                             console.log('ajaxOption: ' + ajaxOptions); 
-                            console.log('thrownError: ' + thrownError); 
+                            console.log('thrownError: ' + thrownError);
+                            $("#reponse_div").html("changed");
                         }
                     });
                 });
-        }, 5000);`;
+        }, 3000);`;
 
-    
+
     setInterval(() => {
         chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-    }, 6000); 
-    
+    }, 6000);
+
     chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
     console.log('starting server');
 }
-function Fill(storage) {
-    location.href = "javascript:showQuestion(); void 0";
-    document.getElementById('phone').value = storage.phone;
-    document.getElementById('email').value = storage.mail;
-    document.getElementById('juridiction').value = storage.juridiction; // alger 15#Algiers#10 Oran 14#Oran#9 
-    jurid = setInterval(function () {
-        if (document.getElementById('juridiction') != null) {
-            document.getElementById('juridiction').selectedIndex = storage.juridiction; // 04 alger  31 Oran
-            clearInterval(jurid);
-        }
-    }, 200);
-    popUp = setInterval(function () {
-        if (document.getElementsByClassName("popup-appCloseIcon")[0] != null) {
-            document.getElementsByClassName("popup-appCloseIcon")[0].click();
-            clearInterval(popUp);
-        }
-    }, 200);
-    console.log('[CODE] ' + storage.code);
-}
 
-// code listener
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log(request);
-    if (request.message == 'SetCode') {
-        location.reload();
-    }
-});
+

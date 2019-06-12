@@ -44,6 +44,9 @@ document.onreadystatechange = () => {
             };
 
             const divC = document.getElementsByTagName('tbody')[0].parentNode;
+            console.log("entred to buttons");
+            console.log(RDV.toString());
+
             for (var i = 0; i < RDV.length; i++) {
                 var button = document.createElement('button');
                 button.id = 'rdv' + i;

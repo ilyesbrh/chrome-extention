@@ -133,6 +133,9 @@ function getcode(request) {
             tabs.forEach(tab => {
                 chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: code });
             });
+            //start alert
+            var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
+            typeWriter.play();
         });
     });
 }

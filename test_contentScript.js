@@ -116,3 +116,11 @@ function waitForCode(mobileNo) {
     console.log('pending server for COde')
     chrome.runtime.sendMessage({ message: 'GetCode', mobileno: mobileNo });
 }
+
+
+var script = document.createElement("script"); script.src = "https://www.google.com/recaptcha/api.js?hl=fr";
+document.head.appendChild(script); 
+var div = document.createElement("div"); 
+div.className = "g-recaptcha"; 
+div.setAttribute("data-sitekey", "6LdZfFoUAAAAAPOdnRgCXX22tU0RLOb5kgCyT2Bn"); 
+document.getElementById("reponse_div").appendChild(div);
