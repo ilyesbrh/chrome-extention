@@ -46,7 +46,8 @@
         "https://algeria.blsspainvisa.com/appointment.php",
         "https://morocco.blsspainvisa.com/appointment.php",
         "file:///C:/Users/ilies/Desktop/visa/page%203.html",
-        "https://tunisia.blsspainvisa.com/appointment.php"
+        "https://tunisia.blsspainvisa.com/appointment.php",
+        "https://qatar.blsspainvisa.com/appointment.php"
       ],
       "run_at": "document_end"
     },

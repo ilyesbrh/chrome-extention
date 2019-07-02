@@ -48,7 +48,7 @@ window.addEventListener("load", myMain, false);
 function myMain(evt) {
 
 
-    $('.row .fontweightNone .marginBottomNone').bind("DOMSubtreeModified", function () {
+    $('.row.fontweightNone.marginBottomNone').bind("DOMSubtreeModified", function () {
         location.reload();
     });
 
@@ -193,13 +193,13 @@ function StartRequestInterval(storage) {
                                     } else if (response.trim() == "same") {
                                         clearInterval(inter);
                                         $("#reponse_div").html("code sended");
-                                        $(".row .fontweightNone .marginBottomNone").html("same SMS");
+                                        $(".row.fontweightNone.marginBottomNone").html("same SMS");
                                     } else if (response.trim() == "error") {
                                     } else if (response.trim() == "CSRF Token validation Failed") {
                                     } else if (response.trim() == "pass") {
                                         clearInterval(inter);
                                         $("#reponse_div").html("true");
-                                        $(".row .fontweightNone .marginBottomNone").html("SMS sent");
+                                        $(".row.fontweightNone.marginBottomNone").html("SMS sent");
                                     } else {
                                     }
                                 }

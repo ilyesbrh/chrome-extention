@@ -81,6 +81,7 @@ function ClearServerCode(xhr, request) {
                 msg: "cleared",
                 data: xhr.responseText
             });
+            stopAlert();
         }
     };
     xhr.send();
@@ -123,6 +124,8 @@ function GetServerStats(xhr) {
     xhr.send();
 }
 
+
+var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
 function getcode(request) {
     channel.unbind();
     channel.bind(request.mobileno + '', function (code) {
@@ -134,9 +137,12 @@ function getcode(request) {
                 chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: code });
             });
             //start alert
-            var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
             typeWriter.play();
+
         });
     });
 }
 
+function stopAlert() {
+    typeWriter.pause();
+}
