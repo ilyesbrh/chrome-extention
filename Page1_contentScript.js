@@ -33,7 +33,7 @@ var popUp; // this one to close popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log('[CODE] ' + request.PhoneCode);
     if (request.message == 'SetCode') {
-        location.href = `javascript: $('#otpvr').val(${request.PhoneCode})`;
+        location.href = `javascript: $('#otpvr').val('${request.PhoneCode}')`;
     }
 });
 
