@@ -79,18 +79,6 @@ document.onreadystatechange = () => {
                     $('#terms').prop('checked', true);
     
                     document.getElementById('applicantBooking2').onsubmit = function () { return true };
-                    
-                    var page3Interval = setInterval(() => {
-                        var g =grecaptcha.getResponse();
-                        if(g != ''){
-                            $("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />');
-                            document.getElementById('applicantBooking2').submit();
-                            console.log("redirecting");
-                            clearInterval(page3Interval);
-                        }else{
-                            console.log('not checked yet');
-                        }
-                    }, 500);
                     `;
                 });
 
