@@ -119,8 +119,12 @@ document.onreadystatechange = () => {
                 console.log(available_dates);
                 if (available_dates.length > 2) {
                     document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 2]);
-                } else {
+                } else if(available_dates.length > 0 ) {
                     document.getElementById('app_date').value = formatDate(available_dates[available_dates.length - 1]);
+                }else{
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
                 }
 
                 document.getElementById('applicantBooking2').onsubmit = function () { return true };

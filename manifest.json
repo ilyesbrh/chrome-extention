@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "SLB",
   "version": "1.0",
   "description": "extension rdv spain SLB",
@@ -48,19 +48,6 @@
         "file:///C:/Users/ilies/Desktop/visa/page%203.html",
         "https://tunisia.blsspainvisa.com/appointment.php",
         "https://qatar.blsspainvisa.com/appointment.php"
-      ],
-      "run_at": "document_end"
-    },
-    {
-      "all_frames": true,
-      "css": [],
-      "js": [
-        "jquery-2.1.4.min.js",
-        "Rechapcha.js"
-      ],
-      "matches": [
-        "http://*/*",
-        "https://*/*"
       ],
       "run_at": "document_end"
     },

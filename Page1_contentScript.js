@@ -6,7 +6,7 @@
 
 /* variables */
 
-var time = 1000;//time to refresh if page had error
+var time = 100;//time to refresh if page had error
 
 //intervals
 
@@ -47,70 +47,59 @@ window.addEventListener("load", myMain, false);
  */
 function myMain(evt) {
 
-
-    $('.row.fontweightNone.marginBottomNone').bind("DOMSubtreeModified", function () {
-        location.reload();
-    });
-
     console.log('[Start] application started');
 
-    /* if page 1 B (Term and conditions page ) */
-    if (document.getElementsByName('agree')[0]) {
-        document.getElementsByName('agree')[0].click();
-    }
-    /* if page 1 A */
-    else {
-        /* loading info's */
-        chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
+    if (!!$('.row.fontweightNone.marginBottomNone')) {
+        location.reload();
+    } else {
 
-            /* if 'otpvr' exist then page 1 A is open */
-            if (document.getElementById('otpvr')) {
+        /* if page 1 B (Term and conditions page ) */
+        if (document.getElementsByName('agree')[0]) {
+            document.getElementsByName('agree')[0].click();
+        }
+        /* if page 1 A */
+        else {
+            setInterval(() => {
+                chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
+            }, 6000);
+            chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
+        
+            chrome.runtime.sendMessage({ message: 'startAlarm' });
+            /* loading info's */
+            chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
 
-                /* send info's to initialize them */
-                initialize(storage);
+                /* if 'otpvr' exist then page 1 A is open */
+                if (document.getElementById('otpvr')) {
 
-                if (storage.code == '') {
-                    //demand code
-                    StartRequestInterval(storage);
-                    //wait for code
-                    waitForCode();
+                    /* send info's to initialize them */
+                    initialize(storage);
 
-                } else {
-                    //set code value in target input
-                    document.getElementById('otpvr').value = storage.code;
-                    //wait for code
-                    waitForCode();
-                }
-            }
-            else {
-                if (storage.code == '') {
-                    StartRequestInterval(storage);
+                    if (storage.code == '') {
+
+                        //demand code
+                        //StartRequestInterval(storage); // old method
+
+                        //wait for code
+                        //waitForCode(); // not used in first version
+
+                    } else {
+                        //set code value in target input
+                        location.href = 'javascript:document.getElementById(\'otpvr\').value = ' + storage.code + ';'
+                    }
                 }
                 else {
-                    console.log('error shouldnt get here');
-                    location.reload();
+                    if (storage.code == '') {
+                        StartRequestInterval(storage);
+                    }
+                    else {
+                        console.log('error shouldnt get here');
+                        location.reload();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
-}
 
-function waitForCode() {
-    location.href = `javascript:
-                    var intrval = setInterval(() => {
-                        var g = '';
-                        try{
-                            g = grecaptcha.getResponse();
-                        }catch(error){
-                        }
-                        if(g != '' && $('#otpvr').val() != "" ){
-                            document.getElementsByName('save')[0].click();
-                            console.log("[REDIRECT]");
-                            clearInterval(intrval);
-                        }else{
-                            console.log('[WAITING] recaptcha or code not filled yet');
-                        }
-                    }, 250);`;
 }
 
 /**
@@ -124,28 +113,30 @@ function initialize(storage) {
     /* setup input's */
     document.getElementById('phone').value = storage.phone;
     document.getElementById('email').value = storage.mail;
+    document.getElementById('juridiction').selectedIndex = storage.juridiction; // 04 alger  31 Oran
 
-    /* if it work keep it :)  ( i dont know why i repeated the same element )*/
-    document.getElementById('juridiction').value = storage.juridiction; // alger 15#Algiers#10 Oran 14#Oran#9 
-    jurid = setInterval(function () {
-        if (document.getElementById('juridiction') != null) {
-            document.getElementById('juridiction').selectedIndex = storage.juridiction; // 04 alger  31 Oran
-            clearInterval(jurid);
-        }
-    }, 200);
-
-    /* this one to close a popup that came in website opening */
-    popUp = setInterval(function () {
-        if (document.getElementsByClassName("popup-appCloseIcon")[0] != null) {
-            document.getElementsByClassName("popup-appCloseIcon")[0].click();
-            clearInterval(popUp);
-        }
-    }, 200);
+    document.getElementsByClassName("popup-appCloseIcon")[0].click();
 
     console.log('[CODE] ' + storage.code);
 }
+
 /**
- * 
+ * too risky to use in first version 
+ */
+function waitForCode() {
+    location.href = `javascript:
+                    var intrval = setInterval(() => {
+                        if($('#otpvr').val() != "" ){
+                            document.getElementsByName('save')[0].click();
+                            console.log("[REDIRECT]");
+                            clearInterval(intrval);
+                        }else{
+                            console.log('[WAITING] recaptcha or code not filled yet');
+                        }
+                    }, 250);`;
+}
+/**
+ * useless function not working anymore
  * @param {*} storage 
  */
 function StartRequestInterval(storage) {

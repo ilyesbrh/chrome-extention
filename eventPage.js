@@ -44,6 +44,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         case 'ClearServerCode':
             ClearServerCode(xhr, request);
             break;
+        case 'startAlarm':
+            startAlert();
+            break;
         default:
             break;
     }
@@ -126,6 +129,7 @@ function GetServerStats(xhr) {
 
 
 var typeWriter = new Audio("http://soundbible.com/mp3/Police-TheCristi95-214716303.mp3");
+
 function getcode(request) {
     channel.unbind();
     channel.bind(request.mobileno + '', function (code) {
@@ -136,8 +140,6 @@ function getcode(request) {
             tabs.forEach(tab => {
                 chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: code });
             });
-            //start alert
-            typeWriter.play();
 
         });
     });
@@ -145,4 +147,7 @@ function getcode(request) {
 
 function stopAlert() {
     typeWriter.pause();
+}
+function startAlert() {
+    typeWriter.play();
 }
