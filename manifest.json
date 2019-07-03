@@ -26,6 +26,7 @@
         "Page1_contentScript.js"
       ],
       "matches": [
+        "https://morocco.blsspainvisa.com/book_appointment.php",
         "https://algeria.blsspainvisa.com/book_appointment.php",
         "https://tunisia.blsspainvisa.com/book_appointment.php",
         "file:///C:/Users/ilies/Desktop/visa/afterRework.html",

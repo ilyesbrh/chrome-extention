@@ -49,7 +49,7 @@ function myMain(evt) {
 
     console.log('[Start] application started');
 
-    if (!!$('.row.fontweightNone.marginBottomNone')) {
+    if (document.getElementsByClassName('row fontweightNone marginBottomNone').length != 0) {
         location.reload();
     } else {
 
@@ -59,18 +59,18 @@ function myMain(evt) {
         }
         /* if page 1 A */
         else {
-            setInterval(() => {
-                chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-            }, 6000);
-            chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-        
             chrome.runtime.sendMessage({ message: 'startAlarm' });
             /* loading info's */
             chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
 
+
                 /* if 'otpvr' exist then page 1 A is open */
                 if (document.getElementById('otpvr')) {
 
+                    setInterval(() => {
+                        chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
+                    }, 6000);
+                    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
                     /* send info's to initialize them */
                     initialize(storage);
 
@@ -88,13 +88,8 @@ function myMain(evt) {
                     }
                 }
                 else {
-                    if (storage.code == '') {
-                        StartRequestInterval(storage);
-                    }
-                    else {
-                        console.log('error shouldnt get here');
-                        location.reload();
-                    }
+                    console.log('Danger ZONE');
+                    location.reload();
                 }
             });
         }
