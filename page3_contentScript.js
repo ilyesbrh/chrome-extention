@@ -77,8 +77,10 @@ document.onreadystatechange = () => {
                     var ei = Math.floor((Math.random() * indexMax) + 0);
                     document.getElementById('app_time').selectedIndex = ei;
                     $('#terms').prop('checked', true);
-    
                     document.getElementById('applicantBooking2').onsubmit = function () { return true };
+                    $("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />');
+                    document.getElementById('applicantBooking2').submit();
+                    console.log("redirecting");
                     `;
                 });
 
