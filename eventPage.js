@@ -4,6 +4,8 @@
  *
  */
 // Enable pusher logging - don't include this in production
+var PHONE = '555134364';
+
 Pusher.logToConsole = true;
 
 var pusher = new Pusher('ac31c0012dc8ff3814c8', {
@@ -12,7 +14,17 @@ var pusher = new Pusher('ac31c0012dc8ff3814c8', {
 });
 
 var channel = pusher.subscribe('sms');
+channel.bind(PHONE, function (code) {
+    console.log('[CODE] ' + ' ' + code);
+    chrome.storage.sync.set({ code: code });
+    chrome.tabs.query({}, function (tabs) {
+        //Send Code to all tabs in browser (bah tadmon bli kamel wsalhom code)
+        tabs.forEach(tab => {
+            chrome.tabs.sendMessage(tab.id, { message: 'SetCode', PhoneCode: code });
+        });
 
+    });
+});
 var BASE_URL = 'https://iliesbourouh.000webhostapp.com/';
 
 chrome.runtime.onInstalled.addListener(function (details) {

@@ -48,11 +48,11 @@ window.addEventListener("load", myMain, false);
 function myMain(evt) {
 
     console.log('[Start] application started');
-
+    
     if (document.getElementsByClassName('row fontweightNone marginBottomNone').length != 0) {
         location.reload();
     } else {
-
+        
         /* if page 1 B (Term and conditions page ) */
         if (document.getElementsByName('agree')[0]) {
             document.getElementsByName('agree')[0].click();
@@ -62,15 +62,15 @@ function myMain(evt) {
             chrome.runtime.sendMessage({ message: 'startAlarm' });
             /* loading info's */
             chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
-
-
+                
+                
                 /* if 'otpvr' exist then page 1 A is open */
                 if (document.getElementById('otpvr')) {
-
+                    
+                    /* chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
                     setInterval(() => {
                         chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-                    }, 6000);
-                    chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
+                    }, 6000); */
                     /* send info's to initialize them */
                     initialize(storage);
 
