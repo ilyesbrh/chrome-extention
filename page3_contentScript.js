@@ -36,10 +36,6 @@ document.onreadystatechange = () => {
                     document.getElementById('pptIssuePalace').value = rdv.issuePlace;
                     document.getElementById('VisaTypeId').selectedIndex = rdv.visatype;
 
-                    var indexMax = document.getElementById('app_time').length - 1;
-                    var ei = Math.floor((Math.random() * indexMax) + 0);
-                    document.getElementById('app_time').selectedIndex = ei;
-                    $('#terms').prop('checked', true);
                 }
             };
 
@@ -76,10 +72,9 @@ document.onreadystatechange = () => {
                     var indexMax = document.getElementById('app_time').length - 1;
                     var ei = Math.floor((Math.random() * indexMax) + 0);
                     document.getElementById('app_time').selectedIndex = ei;
-                    $('#terms').prop('checked', true);
-                    document.getElementById('applicantBooking2').onsubmit = function () { return true };
+                    document.getElementsByTagName('form')[0].onsubmit = function () { return true };
                     $("#applicantBooking2").append('<input type="hidden" name="save" value="Submit" />');
-                    document.getElementById('applicantBooking2').submit();
+                    document.getElementsByTagName('form')[0].submit();
                     console.log("redirecting");
                     `;
                 });
@@ -90,20 +85,10 @@ document.onreadystatechange = () => {
                 var data;
 
                 try {
-                    data = document.getElementsByTagName('script')[10].innerText;
+                    data = document.getElementsByTagName('script')[12].innerText;
                     var result = re.exec(data);
                     eval(result[0]);
                 } catch (error) {
-
-                    try {
-                        data = document.getElementsByTagName('script')[9].innerText;
-                        var result = re.exec(data);
-                        eval(result[0]);
-                    } catch (error) {
-                        data = document.getElementsByTagName('script')[8].innerText;
-                        var result = re.exec(data);
-                        eval(result[0]);
-                    }
                 }
 
                 console.log(available_dates);
@@ -114,11 +99,11 @@ document.onreadystatechange = () => {
                 }else{
                     setTimeout(() => {
                         location.reload();
-                    }, 3000);
+                    }, 2000);
                 }
 
-                document.getElementById('applicantBooking2').onsubmit = function () { return true };
-                document.getElementById('applicantBooking2').submit();
+                document.getElementsByTagName('form')[0].onsubmit = function () { return true };
+                document.getElementsByTagName('form')[0].submit();
             }
         } else
             location.reload();

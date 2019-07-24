@@ -33,7 +33,10 @@ var popUp; // this one to close popup
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log('[CODE] ' + request.PhoneCode);
     if (request.message == 'SetCode') {
-        location.href = `javascript: $('#otpvr').val('${request.PhoneCode}')`;
+        location.href = `javascript: 
+        $('#otpvr').val('${request.PhoneCode}');
+        document.getElementsByName('save')[0].click();
+        `;
     }
 });
 
@@ -48,51 +51,38 @@ window.addEventListener("load", myMain, false);
 function myMain(evt) {
 
     console.log('[Start] application started');
-    
+
     if (document.getElementsByClassName('row fontweightNone marginBottomNone').length != 0) {
         location.reload();
     } else {
-        
+
         /* if page 1 B (Term and conditions page ) */
-        if (document.getElementsByName('agree')[0]) {
+        if (document.getElementsByName('agree')[0])
             document.getElementsByName('agree')[0].click();
-        }
         /* if page 1 A */
-        else {
-            chrome.runtime.sendMessage({ message: 'startAlarm' });
+        else
+            //chrome.runtime.sendMessage({ message: 'startAlarm' });
             /* loading info's */
             chrome.storage.sync.get(['phone', 'juridiction', 'mail', 'code'], function (storage) {
-                
-                
+
                 /* if 'otpvr' exist then page 1 A is open */
-                if (document.getElementById('otpvr')) {
-                    
-                    /* chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-                    setInterval(() => {
-                        chrome.runtime.sendMessage({ message: 'GetCode', mobileno: storage.phone });
-                    }, 6000); */
-                    /* send info's to initialize them */
+                if (!!document.getElementById('otpvr')) {
                     initialize(storage);
-
-                    if (storage.code == '') {
-
-                        //demand code
-                        //StartRequestInterval(storage); // old method
-
-                        //wait for code
-                        //waitForCode(); // not used in first version
-
-                    } else {
-                        //set code value in target input
-                        location.href = 'javascript:document.getElementById(\'otpvr\').value = ' + storage.code + ';'
+                    var regexpP1 = /Please used last sent verification code.|Verification code sent to your phone./g;
+                    var isSended = document.body.innerText.search(regexpP1);
+                    if (isSended != -1 && storage.code != '') {
+                        location.href = 'javascript: $(\'#otpvr\').val(' + storage.code + ');';
+                        document.getElementsByName('save')[0].click();
                     }
+                    else if (isSended == -1)
+                        document.getElementsByName('verification_code')[0].click();
+
                 }
-                else {
-                    console.log('Danger ZONE');
+                else
                     location.reload();
-                }
+
             });
-        }
+
     }
 
 }
