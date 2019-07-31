@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'SetCode') {
         location.href = `javascript: 
         $('#otpvr').val('${request.PhoneCode}');
-        document.getElementsByName('save')[0].click();
+        /*document.getElementsByName('save')[0].click();*/
         `;
     }
 });
@@ -58,7 +58,7 @@ function myMain(evt) {
 
         /* if page 1 B (Term and conditions page ) */
         if (document.getElementsByName('agree')[0])
-            document.getElementsByName('agree')[0].click();
+            location.href = "javascript:document.getElementsByName('agree')[0].click();";
         /* if page 1 A */
         else
             //chrome.runtime.sendMessage({ message: 'startAlarm' });
@@ -72,10 +72,13 @@ function myMain(evt) {
                     var isSended = document.body.innerText.search(regexpP1);
                     if (isSended != -1 && storage.code != '') {
                         location.href = 'javascript: $(\'#otpvr\').val(' + storage.code + ');';
-                        document.getElementsByName('save')[0].click();
+                        //location.href = "javascript:document.getElementsByName('save')[0].click();";
+
                     }
-                    else if (isSended == -1)
-                        document.getElementsByName('verification_code')[0].click();
+                    else if (isSended == -1) {
+                        //location.href = "javascript:document.getElementsByName('verification_code')[0].click();";
+                    }
+
 
                 }
                 else
@@ -96,11 +99,14 @@ function initialize(storage) {
     /* show question */
     location.href = "javascript:showQuestion(); void 0";
     /* setup input's */
-    document.getElementById('phone').value = storage.phone;
-    document.getElementById('email').value = storage.mail;
-    document.getElementById('juridiction').selectedIndex = storage.juridiction; // 04 alger  31 Oran
+    location.href = `javascript: 
+    document.getElementById('phone').value = ${storage.phone};
+    document.getElementById('email').value = ${storage.mail};
+    document.getElementById('juridiction').selectedIndex = ${storage.juridiction}; // 04 alger  31 Oran
 
     document.getElementsByClassName("popup-appCloseIcon")[0].click();
+    `;
+
 
     console.log('[CODE] ' + storage.code);
 }
